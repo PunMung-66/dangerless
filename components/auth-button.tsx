@@ -1,8 +1,7 @@
 import { User } from "lucide-react";
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { GoogleAuthButton } from "./google-auth-button";
 import { LogoutButton } from "./logout-button";
-import { Button } from "./ui/button";
 
 export async function AuthButton() {
   const supabase = await createClient();
@@ -11,16 +10,7 @@ export async function AuthButton() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return (
-      <div className="flex gap-2">
-        <Button asChild size="sm" variant="outline">
-          <Link href="/auth/login">Sign In</Link>
-        </Button>
-        <Button asChild size="sm">
-          <Link href="/auth/sign-up">Sign Up</Link>
-        </Button>
-      </div>
-    );
+    return <GoogleAuthButton />;
   }
 
   return (
