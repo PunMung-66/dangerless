@@ -1,4 +1,4 @@
-import { InfoIcon } from "lucide-react";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -10,55 +10,32 @@ export default async function ProtectedPage() {
   } = await supabase.auth.getUser();
 
   if (error || !user) {
-    redirect("/auth/login");
+    redirect("/");
   }
 
+  const profileImage = user.user_metadata?.avatar_url;
+  const fullName = user.user_metadata?.full_name || user.user_metadata?.name;
+  const firstName =
+    fullName?.split(" ")[0] || user.email?.split("@")[0] || "User";
+
   return (
-    <div className="container mx-auto py-8">
-      <div className="max-w-4xl mx-auto space-y-8">
-        <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
-          <InfoIcon size="16" strokeWidth={2} />
-          This is a protected page that you can only see as an authenticated
-          user
-        </div>
-
-        <div className="space-y-4">
-          <h2 className="font-bold text-2xl">Welcome back!</h2>
-          <p className="text-muted-foreground">
-            You&apos;re successfully authenticated. Start building your
-            application features here.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="p-6 border rounded-lg bg-card">
-            <h3 className="font-semibold text-lg mb-2">Dashboard</h3>
-            <p className="text-muted-foreground">Main application dashboard</p>
-          </div>
-
-          <div className="p-6 border rounded-lg bg-card">
-            <h3 className="font-semibold text-lg mb-2">Profile</h3>
-            <p className="text-muted-foreground">Manage your user profile</p>
-          </div>
-
-          <div className="p-6 border rounded-lg bg-card">
-            <h3 className="font-semibold text-lg mb-2">Settings</h3>
-            <p className="text-muted-foreground">Application settings</p>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="font-semibold text-lg">User Information</h3>
-          <div className="p-4 bg-muted/50 rounded-lg">
-            <p className="text-sm">
-              <strong>Email:</strong> {user.email}
-            </p>
-            <p className="text-sm">
-              <strong>User ID:</strong> {user.id}
-            </p>
-            <p className="text-sm">
-              <strong>Created:</strong>{" "}
-              {new Date(user.created_at).toLocaleDateString()}
+    <div className="min-h-[60vh] w-full flex items-center justify-center">
+      <div className="w-full text-center space-y-8 p-8">
+        <div className="space-y-6">
+          {profileImage && (
+            <Image
+              src={profileImage}
+              alt={fullName || "User"}
+              width={96}
+              height={96}
+              className="h-24 w-24 rounded-full mx-auto"
+              referrerPolicy="no-referrer"
+            />
+          )}
+          <div className="space-y-3">
+            <h1 className="text-5xl font-bold w-full">Welcome, {firstName}!</h1>
+            <p className="text-muted-foreground text-xl">
+              You&apos;re successfully authenticated with Google
             </p>
           </div>
         </div>
