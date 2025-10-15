@@ -30,7 +30,7 @@ export default function MainSearchbar() {
     setSelectedIndex(null);
     setSearchTerm(query);
     try {
-      const res = await geocode(query, 5);
+      const res = await geocode(query, 1);
       if (!res) {
         setError("No results found");
         return;

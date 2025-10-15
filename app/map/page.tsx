@@ -12,7 +12,6 @@ export default function MapPage() {
   return (
     <MapProvider>
       <div className="relative w-full h-screen">
-        <h1 className="sr-only">Map (MapLibre + Nominatim)</h1>
         <MainSearchbar />
         <MapComponent />
       </div>

@@ -10,4 +10,7 @@ export type NominatimResult = {
     type: string;
     coordinates: number[] | number[][] | number[][][] | number[][][][];
   };
+  address?: {
+    [key: string]: string;
+  };
 };

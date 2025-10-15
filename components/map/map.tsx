@@ -10,7 +10,6 @@ export default function MapComponent() {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markerRef = useRef<maplibregl.Marker | null>(null);
-  const zoomTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -44,16 +43,23 @@ export default function MapComponent() {
 
     map.addControl(
       new maplibregl.NavigationControl({
-        showCompass: false,
+        showCompass: true,
         showZoom: true,
       }),
       "bottom-left"
     );
 
-    const marker = new maplibregl.Marker({ color: "#000" })
-      .setLngLat([0, 0])
-      .addTo(map);
-    markerRef.current = marker;
+    // Add geolocate control to center map on user's location
+    map.addControl(
+      new maplibregl.GeolocateControl({
+        positionOptions: {
+          enableHighAccuracy: true,
+        },
+        trackUserLocation: true,
+        showUserLocation: true,
+      }),
+      "bottom-left"
+    );
 
     map.once("load", () => {
       try {
@@ -64,12 +70,6 @@ export default function MapComponent() {
     });
 
     return () => {
-      // clear any pending zoom timeout
-      if (zoomTimeoutRef.current) {
-        clearTimeout(zoomTimeoutRef.current);
-        zoomTimeoutRef.current = null;
-      }
-
       // clean up map and marker
       markerRef.current?.remove();
       map.remove();
@@ -83,8 +83,6 @@ export default function MapComponent() {
     if (!results || selectedIndex === null) return;
     const r = results[selectedIndex];
     if (!r) return;
-    const lon = parseFloat(r.lon);
-    const lat = parseFloat(r.lat);
     const map = mapRef.current;
     if (!map) return;
 
@@ -98,6 +96,11 @@ export default function MapComponent() {
     if (map.getSource("area-highlight")) {
       map.removeSource("area-highlight");
     }
+
+    // Calculate bounding box and center
+    let bounds: [[number, number], [number, number]] | null = null;
+    let centerLon = parseFloat(r.lon);
+    let centerLat = parseFloat(r.lat);
 
     // Add area highlight using geojson if available, otherwise fall back to boundingbox
     if (r.geojson && r.geojson.coordinates) {
@@ -132,6 +135,29 @@ export default function MapComponent() {
           "line-width": 2,
         },
       });
+
+      // Calculate bounds from bounding box if available
+      if (r.boundingbox && r.boundingbox.length === 4) {
+        const bbox = r.boundingbox
+          .map((s) => parseFloat(s))
+          .filter((n): n is number => !isNaN(n));
+
+        if (bbox.length === 4) {
+          const [south, north, west, east] = bbox as [
+            number,
+            number,
+            number,
+            number
+          ];
+          bounds = [
+            [west, south],
+            [east, north],
+          ];
+          // Calculate center of bounding box
+          centerLon = (west + east) / 2;
+          centerLat = (south + north) / 2;
+        }
+      }
     } else if (r.boundingbox && r.boundingbox.length === 4) {
       // Fall back to bounding box rectangle
       const bbox = r.boundingbox
@@ -144,6 +170,15 @@ export default function MapComponent() {
           number,
           number,
           number
+        ];
+
+        // Calculate center of bounding box
+        centerLon = (west + east) / 2;
+        centerLat = (south + north) / 2;
+
+        bounds = [
+          [west, south],
+          [east, north],
         ];
 
         map.addSource("area-highlight", {
@@ -188,25 +223,23 @@ export default function MapComponent() {
       }
     }
 
-    // move in and zoom to the place
-    map.easeTo({ center: [lon, lat], zoom: 14 });
-
-    // clear previous timeout if any
-    if (zoomTimeoutRef.current) {
-      clearTimeout(zoomTimeoutRef.current);
-      zoomTimeoutRef.current = null;
-    }
-
-    // after a short delay, ease out a bit so the user sees context
-    zoomTimeoutRef.current = setTimeout(() => {
-      map.easeTo({ zoom: 13, duration: 1500 });
-      zoomTimeoutRef.current = null;
-    }, 1400);
-    if (markerRef.current) markerRef.current.setLngLat([lon, lat]);
+    // Update marker position to center of area
+    if (markerRef.current) markerRef.current.setLngLat([centerLon, centerLat]);
     else
       markerRef.current = new maplibregl.Marker({ color: "#d00" })
-        .setLngLat([lon, lat])
+        .setLngLat([centerLon, centerLat])
         .addTo(map);
+
+    // Fit the map to the bounds if available, otherwise center on the point
+    if (bounds) {
+      map.fitBounds(bounds, {
+        padding: { top: 50, bottom: 50, left: 50, right: 50 },
+        duration: 1500,
+      });
+    } else {
+      // No bounding box, just center on the point with default zoom
+      map.easeTo({ center: [centerLon, centerLat], zoom: 14, duration: 1500 });
+    }
   }, [results, selectedIndex]);
 
   return <div ref={mapContainer} className="w-full h-full" />;

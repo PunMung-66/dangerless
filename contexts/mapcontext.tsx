@@ -45,7 +45,15 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
       if (!res.ok) throw new Error(`Nominatim proxy error: ${res.status}`);
       const data = await res.json();
       if (!data || data.length === 0) return null;
-      return data as NominatimResult[];
+      // console.log("Geocode results:", data);
+      const filtered = (data as NominatimResult[]).filter((result) => {
+        if (!result.address) return false;
+        if (result.geojson && !result.address.quarter) {
+          return true;
+        }
+        return false;
+      });
+      return filtered.length > 0 ? filtered : null;
     } catch (err) {
       console.error(err);
       return null;
