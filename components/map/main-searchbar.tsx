@@ -45,9 +45,9 @@ export default function MainSearchbar() {
   }
 
   return (
-    <div className="w-full max-w-[343px] absolute z-10 px-4 py-4">
+    <div className="w-full max-w-[280px] sm:max-w-[343px] absolute z-20  px-2 py-4 transition-transform duration-300 map-searchbar">
       <form onSubmit={onSearch} className="flex">
-        <div className="flex flex-col w-full rounded-lg overflow-hidden bg-white text-black dark:bg-slate-800 dark:text-white shadow-md">
+        <div className="flex flex-col w-full rounded-lg overflow-hidden bg-white text-black dark:bg-slate-950 dark:text-white shadow-md">
           <div className="flex items-center">
             {loading ? (
               <MapLoader />
@@ -68,7 +68,7 @@ export default function MainSearchbar() {
             )}
             <input
               aria-label="Search place"
-              className="w-full p-2 text-xs border-b-1 border-gray-300 focus:outline-none"
+              className="w-full p-2 text-xs border-b-1 border-gray-300 focus:outline-none bg-inherit"
               placeholder="Search for a district"
               value={query}
               onChange={(ev) => setQuery(ev.target.value)}

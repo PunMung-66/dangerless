@@ -2,19 +2,24 @@
 
 import dynamic from "next/dynamic";
 import React from "react";
+import DetailBar from "@/components/map/detail-bar";
 import MainSearchbar from "../../components/map/main-searchbar";
 const MapComponent = dynamic(() => import("../../components/map/map"), {
   ssr: false,
 });
-import { MapProvider } from "../../contexts/mapcontext";
+import { useDataMap } from "../../contexts/mapcontext";
 
 export default function MapPage() {
+  const { selectedIndex } = useDataMap();
   return (
-    <MapProvider>
-      <div className="relative w-full h-screen">
+    <>
+      <div>
         <MainSearchbar />
+        {selectedIndex !== null && <DetailBar initialOpen />}
+      </div>
+      <div className="relative w-full h-screen">
         <MapComponent />
       </div>
-    </MapProvider>
+    </>
   );
 }
