@@ -14,3 +14,10 @@ export type NominatimResult = {
     [key: string]: string;
   };
 };
+
+export type ModeKey = "scouting" | "news" | "history";
+
+export type ModeMenu = {
+  key: ModeKey;
+  label: string;
+};

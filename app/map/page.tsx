@@ -15,7 +15,7 @@ export default function MapPage() {
     <>
       <div>
         <MainSearchbar />
-        {selectedIndex !== null && <DetailBar initialOpen />}
+        {selectedIndex !== null && <DetailBar />}
       </div>
       <div className="relative w-full h-screen">
         <MapComponent />

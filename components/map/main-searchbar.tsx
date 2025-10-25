@@ -45,7 +45,7 @@ export default function MainSearchbar() {
   }
 
   return (
-    <div className="w-full max-w-[280px] sm:max-w-[343px] absolute z-20  px-2 py-4 transition-transform duration-300 map-searchbar">
+    <div className="w-full max-w-[280px] sm:max-w-[400px] absolute z-20 px-2 py-4 sm:px-4 transition-transform duration-300 map-searchbar">
       <form onSubmit={onSearch} className="flex">
         <div className="flex flex-col w-full rounded-lg overflow-hidden bg-white text-black dark:bg-slate-950 dark:text-white shadow-md">
           <div className="flex items-center">
