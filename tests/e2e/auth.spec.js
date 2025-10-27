@@ -32,9 +32,9 @@ test("Google Sign-In persistent login", async () => {
   await page.getByRole("button", { name: "Sign In with Google" }).click();
 
   // Perform Google login
-  await page.getByRole("textbox", { name: "Email or phone" }).fill(
-    process.env.GOOGLE_SIGNIN_EMAIL
-  );
+  await page
+    .getByRole("textbox", { name: "Email or phone" })
+    .fill(process.env.GOOGLE_SIGNIN_EMAIL);
   await page.getByRole("button", { name: "Next" }).click();
 
   await page.waitForSelector('input[type="password"]');
@@ -45,4 +45,4 @@ test("Google Sign-In persistent login", async () => {
   await page.waitForURL("http://localhost:3000/**");
 
   await browser.close();
-});
+}, 120000);
