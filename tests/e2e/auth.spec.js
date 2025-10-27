@@ -45,4 +45,4 @@ test("Google Sign-In persistent login", async () => {
   await page.waitForURL("http://localhost:3000/**");
 
   await browser.close();
-}, 120000);
+});
