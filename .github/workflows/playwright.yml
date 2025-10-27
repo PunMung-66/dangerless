@@ -33,6 +33,9 @@ jobs:
 
       - name: Install Playwright browsers
         run: npx playwright install
+      
+      - name: Start local server
+        run: npm run dev 
 
       - name: Run Playwright tests
         # Run tests in CI-friendly way
