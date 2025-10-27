@@ -36,6 +36,6 @@ jobs:
 
       - name: Run Playwright tests
         # Run tests in CI-friendly way
-        run: npx playwright test tests/e2e/ --headed=false --workers=1
+        run: npx playwright test tests/e2e/
         # --headed=false ensures no UI (headless mode)
         # --workers=1 ensures serial execution (useful if tests share login/session)
