@@ -27,6 +27,7 @@ test("Google Sign-In persistent login", async () => {
 
   // Go to your web app
   await page.goto("http://localhost:3000/");
+  await page.screenshot({ path: "/tmp/after-goto.png" });
 
   // Click Google Sign-In button
   await page.getByRole("button", { name: "Sign In with Google" }).click();
