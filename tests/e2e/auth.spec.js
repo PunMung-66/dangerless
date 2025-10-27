@@ -1,20 +1,25 @@
 import fs from "fs";
 import { test } from "@playwright/test";
 import dotenv from "dotenv";
-dotenv.config({ path: ".env.local" });
 import { chromium } from "playwright";
+
+// Load .env.local only if running locally
+if (!process.env.GITHUB_ACTIONS) {
+  dotenv.config({ path: ".env.local" });
+}
 
 test("Google Sign-In persistent login", async () => {
   // Path where Chromium will store cookies, sessions, etc.
-  const cookiePath = "/home/ubuntu/.config/chromium/Default";
+  const cookiePath = "/tmp/chromium-session"; // use /tmp for GitHub Actions
 
   // Remove previous session folder
   if (fs.existsSync(cookiePath)) {
     fs.rmSync(cookiePath, { recursive: true, force: true });
   }
+
   // Launch persistent browser context
   const browser = await chromium.launchPersistentContext(cookiePath, {
-    headless: true,
+    headless: false,
     args: [`--disable-blink-features=AutomationControlled`],
   });
 
@@ -26,14 +31,12 @@ test("Google Sign-In persistent login", async () => {
   // Click Google Sign-In button
   await page.getByRole("button", { name: "Sign In with Google" }).click();
 
-  // Perform Google login (if not already logged in)
-  await page.getByRole("textbox", { name: "Email or phone" }).click();
-  await page
-    .getByRole("textbox", { name: "Email or phone" })
-    .fill(process.env.GOOGLE_SIGNIN_EMAIL);
+  // Perform Google login
+  await page.getByRole("textbox", { name: "Email or phone" }).fill(
+    process.env.GOOGLE_SIGNIN_EMAIL
+  );
   await page.getByRole("button", { name: "Next" }).click();
 
-  // Wait and fill password (optional: use environment variable instead)
   await page.waitForSelector('input[type="password"]');
   await page.fill('input[type="password"]', process.env.GOOGLE_SIGNIN_PASSWORD);
   await page.click("#passwordNext");

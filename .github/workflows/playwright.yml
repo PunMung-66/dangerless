@@ -13,8 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      # Secrets injected as environment variables
       GOOGLE_SIGNIN_EMAIL: ${{ secrets.GOOGLE_SIGNIN_EMAIL }}
       GOOGLE_SIGNIN_PASSWORD: ${{ secrets.GOOGLE_SIGNIN_PASSWORD }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY }}
 
     steps:
       - name: Checkout repository
@@ -29,7 +32,10 @@ jobs:
         run: npm install
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install
 
-      - name: Run Playwright Test
-        run: npx playwright test tests/e2e/
+      - name: Run Playwright tests
+        # Run tests in CI-friendly way
+        run: npx playwright test tests/e2e/ --headed=false --workers=1
+        # --headed=false ensures no UI (headless mode)
+        # --workers=1 ensures serial execution (useful if tests share login/session)
