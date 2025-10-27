@@ -31,14 +31,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install Xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
       - name: Install Playwright browsers
         run: npx playwright install
       
       - name: Start local server
-        run: npm run dev & 
+        run: |
+          npm run dev &
+          npx wait-on http://localhost:3000
 
-      - name: Run Playwright tests
-        # Run tests in CI-friendly way
-        run: npx playwright test tests/e2e/
-        # --headed=false ensures no UI (headless mode)
-        # --workers=1 ensures serial execution (useful if tests share login/session)
+      - name: Run Playwright tests in headed mode
+        run: xvfb-run -a npx playwright test tests/e2e/ --headed --workers=1
