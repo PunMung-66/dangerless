@@ -61,7 +61,10 @@ test("Google Sign-In persistent login", async () => {
   // Wait for redirect to your app after login
   console.log("Step 10: Waiting for redirect to app");
   await page.waitForURL("http://localhost:3000/**");
-  console.log("Step 10: Redirect complete, login should be successful");
+  
+  const screenshotPath = "/tmp/after-login.png";
+  await page.screenshot({ path: screenshotPath, fullPage: true });
+  console.log("✅ Step 10.1: Screenshot saved after redirect:", screenshotPath);
 
   await browser.close();
   console.log("Step 11: Browser closed, test complete");
