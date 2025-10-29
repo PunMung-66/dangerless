@@ -8,11 +8,11 @@ interface ErrorDisplayProps {
   className?: string;
 }
 
-export function ErrorDisplay({ 
-  error, 
-  onRetry, 
-  onDismiss, 
-  className = "" 
+export function ErrorDisplay({
+  error,
+  onRetry,
+  onDismiss,
+  className = "",
 }: ErrorDisplayProps) {
   return (
     <div className={`rounded-md bg-destructive/10 p-5 ${className}`}>
@@ -35,9 +35,7 @@ export function ErrorDisplay({
           <h3 className="text-sm font-medium text-destructive">
             {getErrorTitle(error.type)}
           </h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {error.message}
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">{error.message}</p>
           {(onRetry || onDismiss) && (
             <div className="mt-3 flex gap-2">
               {onRetry && (
@@ -66,15 +64,15 @@ export function ErrorDisplay({
   );
 }
 
-function getErrorTitle(type: MapError['type']): string {
+function getErrorTitle(type: MapError["type"]): string {
   switch (type) {
-    case 'search':
-      return 'Search Error';
-    case 'api':
-      return 'Connection Error';
-    case 'map':
-      return 'Map Error';
+    case "search":
+      return "Search Error";
+    case "api":
+      return "Connection Error";
+    case "map":
+      return "Map Error";
     default:
-      return 'Error';
+      return "Error";
   }
 }

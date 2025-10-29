@@ -23,13 +23,9 @@ export function MapSidebar() {
   return (
     <div className="h-full flex flex-col">
       <div className="p-5 border-b border-b-foreground/10">
-        <ModeTabs
-          currentMode={mode}
-          onChange={setMode}
-          modes={MODE_MENUS}
-        />
+        <ModeTabs currentMode={mode} onChange={setMode} modes={MODE_MENUS} />
       </div>
-      
+
       <div className="flex-1 overflow-auto">
         {mode === MAP_MODES.SCOUTING && <ScoutingMode />}
         {mode === MAP_MODES.NEWS && <NewsMode />}

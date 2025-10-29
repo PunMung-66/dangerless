@@ -7,13 +7,19 @@ interface LoadingSpinnerProps {
 
 const sizeClasses = {
   sm: "w-4 h-4",
-  md: "w-6 h-6", 
+  md: "w-6 h-6",
   lg: "w-8 h-8",
 };
 
-export function LoadingSpinner({ size = "md", className = "" }: LoadingSpinnerProps) {
+export function LoadingSpinner({
+  size = "md",
+  className = "",
+}: LoadingSpinnerProps) {
   return (
-    <div role="status" className={`flex items-center justify-center ${className}`}>
+    <div
+      role="status"
+      className={`flex items-center justify-center ${className}`}
+    >
       <svg
         aria-hidden="true"
         className={`inline ${sizeClasses[size]} text-muted animate-spin fill-foreground`}

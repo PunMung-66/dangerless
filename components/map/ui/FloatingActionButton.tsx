@@ -24,11 +24,7 @@ export function FloatingActionButton({
       disabled={disabled}
       aria-label={alt}
     >
-      <Image
-        src={icon}
-        alt={alt}
-        className="w-6 h-6"
-      />
+      <Image src={icon} alt={alt} className="w-6 h-6" />
     </button>
   );
 }

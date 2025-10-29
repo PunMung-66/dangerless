@@ -9,7 +9,8 @@ interface MapSearchBarProps {
 }
 
 export function MapSearchBar({ className = "" }: MapSearchBarProps) {
-  const { query, loading, error, search, setQuery, clearResults } = useMapSearch();
+  const { query, loading, error, search, setQuery, clearResults } =
+    useMapSearch();
   const { results, selectLocation, selectedIndex } = useMapSelection();
   const [showResults, setShowResults] = useState(false);
 

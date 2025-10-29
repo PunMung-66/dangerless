@@ -8,11 +8,11 @@ interface ModeTabsProps {
   className?: string;
 }
 
-export function ModeTabs({ 
-  currentMode, 
-  onChange, 
-  modes, 
-  className = "" 
+export function ModeTabs({
+  currentMode,
+  onChange,
+  modes,
+  className = "",
 }: ModeTabsProps) {
   return (
     <div className={`flex space-x-1 ${className}`}>

@@ -3,14 +3,15 @@ import React from "react";
 export function AddNewsMode() {
   return (
     <div className="p-5">
-      <h3 className="text-lg font-semibold mb-4">
-        Report Safety Issue
-      </h3>
+      <h3 className="text-lg font-semibold mb-4">Report Safety Issue</h3>
       <div className="space-y-4">
         <div className="text-sm text-muted-foreground">
-          <p>Help your community by reporting safety concerns or sharing important safety information.</p>
+          <p>
+            Help your community by reporting safety concerns or sharing
+            important safety information.
+          </p>
         </div>
-        
+
         {/* Placeholder for form */}
         <div className="bg-muted p-5 rounded-lg">
           <p className="text-sm text-muted-foreground">

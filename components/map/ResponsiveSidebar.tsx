@@ -12,9 +12,9 @@ interface ResponsiveSidebarProps {
 
 type ViewState = 0 | 1 | 2; // 0: collapsed, 1: partial, 2: full
 
-export function ResponsiveSidebar({ 
-  children, 
-  className = "" 
+export function ResponsiveSidebar({
+  children,
+  className = "",
 }: ResponsiveSidebarProps) {
   const [viewState, setViewState] = useState<ViewState>(1);
 
@@ -22,12 +22,12 @@ export function ResponsiveSidebar({
   const toggleDesktop = () => setViewState((s) => (s > 0 ? 0 : 2));
 
   const { MOBILE, DESKTOP } = DETAIL_BAR_CONFIG;
-  
+
   // Mobile calculations
   const closedTranslateY = MOBILE.FULL_HEIGHT - MOBILE.COLLAPSED_HEIGHT;
   const partialTranslateY = MOBILE.FULL_HEIGHT - MOBILE.PARTIAL_HEIGHT;
-  
-  // Desktop calculations  
+
+  // Desktop calculations
   const closedTranslateX = -(DESKTOP.EXPANDED_WIDTH - DESKTOP.COLLAPSED_WIDTH);
 
   return (
@@ -55,12 +55,15 @@ export function ResponsiveSidebar({
               type="button"
               onClick={nextState}
               className="absolute h-7 -top-7 flex flex-col items-center justify-center gap-1 py-1 px-6 rounded-t-md bg-background/95 backdrop-blur transition-colors hover:bg-accent"
-              aria-label={getAriaLabel(viewState, 'mobile')}
+              aria-label={getAriaLabel(viewState, "mobile")}
             >
               <Image
                 src={ChevronIcon}
                 alt=""
-                className={`w-5 h-3 transform transition-transform duration-280 ${getChevronRotation(viewState, 'mobile')}`}
+                className={`w-5 h-3 transform transition-transform duration-280 ${getChevronRotation(
+                  viewState,
+                  "mobile"
+                )}`}
                 aria-hidden="true"
               />
             </button>
@@ -70,11 +73,12 @@ export function ResponsiveSidebar({
           <div
             className="flex-1 overflow-auto"
             style={{
-              maxHeight: viewState === 2 
-                ? MOBILE.FULL_HEIGHT - 56 
-                : viewState === 1 
-                ? MOBILE.PARTIAL_HEIGHT - 56 
-                : 0,
+              maxHeight:
+                viewState === 2
+                  ? MOBILE.FULL_HEIGHT - 56
+                  : viewState === 1
+                  ? MOBILE.PARTIAL_HEIGHT - 56
+                  : 0,
             }}
           >
             {children}
@@ -104,12 +108,15 @@ export function ResponsiveSidebar({
             type="button"
             onClick={toggleDesktop}
             className="absolute top-[45%] -right-8 h-20 w-8 flex items-center justify-center bg-background/95 hover:bg-accent transition-colors rounded-r-lg shadow-md"
-            aria-label={getAriaLabel(viewState, 'desktop')}
+            aria-label={getAriaLabel(viewState, "desktop")}
           >
             <Image
               src={ChevronIcon}
               alt=""
-              className={`w-4 h-3 transform transition-transform duration-280 ${getChevronRotation(viewState, 'desktop')}`}
+              className={`w-4 h-3 transform transition-transform duration-280 ${getChevronRotation(
+                viewState,
+                "desktop"
+              )}`}
               aria-hidden="true"
             />
           </button>
@@ -119,8 +126,11 @@ export function ResponsiveSidebar({
   );
 }
 
-function getAriaLabel(viewState: ViewState, platform: 'mobile' | 'desktop'): string {
-  if (platform === 'mobile') {
+function getAriaLabel(
+  viewState: ViewState,
+  platform: "mobile" | "desktop"
+): string {
+  if (platform === "mobile") {
     return viewState === 0
       ? "Expand to partial"
       : viewState === 1
@@ -131,8 +141,11 @@ function getAriaLabel(viewState: ViewState, platform: 'mobile' | 'desktop'): str
   }
 }
 
-function getChevronRotation(viewState: ViewState, platform: 'mobile' | 'desktop'): string {
-  if (platform === 'mobile') {
+function getChevronRotation(
+  viewState: ViewState,
+  platform: "mobile" | "desktop"
+): string {
+  if (platform === "mobile") {
     return viewState === 2 ? "rotate-180" : "rotate-0";
   } else {
     return viewState > 0 ? "-rotate-90" : "rotate-90";
