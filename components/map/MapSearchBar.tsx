@@ -46,7 +46,7 @@ export function MapSearchBar({ className = "" }: MapSearchBarProps) {
 
         {/* Results dropdown */}
         {showResults && (
-          <div className="mt-1 rounded-lg overflow-hidden bg-background shadow-lg">
+          <div className="mt-2 rounded-xl overflow-hidden bg-background/75 backdrop-blur-xl shadow-lg">
             {error && (
               <div className="p-3">
                 <ErrorDisplay
@@ -71,7 +71,7 @@ export function MapSearchBar({ className = "" }: MapSearchBarProps) {
             )}
 
             {!loading && !error && results && results.length === 0 && (
-              <div className="p-3 text-sm text-muted-foreground">
+              <div className="p-3 text-sm text-muted-foreground/80">
                 No results found
               </div>
             )}

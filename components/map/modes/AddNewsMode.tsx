@@ -13,7 +13,7 @@ export function AddNewsMode() {
         </div>
 
         {/* Placeholder for form */}
-        <div className="bg-muted p-5 rounded-lg">
+        <div className="bg-foreground/5 p-5 rounded-xl">
           <p className="text-sm text-muted-foreground">
             Report form will be implemented here
           </p>

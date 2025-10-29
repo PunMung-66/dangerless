@@ -20,10 +20,10 @@ export function ModeTabs({
         <button
           key={mode.key}
           onClick={() => onChange(mode.key)}
-          className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+          className={`px-3 py-1.5 text-sm rounded-xl transition-all duration-200 ${
             currentMode === mode.key
-              ? "bg-primary text-primary-foreground shadow-sm"
-              : "bg-muted text-muted-foreground hover:bg-muted/80"
+              ? "bg-primary text-primary-foreground shadow-md"
+              : "bg-foreground/5 text-foreground/80 hover:bg-foreground/10 active:bg-foreground/15"
           }`}
         >
           {mode.label}

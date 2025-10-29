@@ -22,7 +22,7 @@ export function MapSidebar() {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="p-5 border-b border-b-foreground/10">
+      <div className="p-5 border-b border-border/20">
         <ModeTabs currentMode={mode} onChange={setMode} modes={MODE_MENUS} />
       </div>
 

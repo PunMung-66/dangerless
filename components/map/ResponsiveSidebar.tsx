@@ -48,19 +48,19 @@ export function ResponsiveSidebar({
           transition: "transform 280ms cubic-bezier(.2,.8,.2,1)",
         }}
       >
-        <div className="h-full flex flex-col shadow-lg rounded-t-lg bg-background/95 backdrop-blur">
+        <div className="h-full flex flex-col shadow-lg rounded-t-xl bg-background/75 backdrop-blur-xl">
           {/* Handle bar */}
-          <div className="relative flex items-center justify-center px-5 border-b border-b-foreground/10">
+          <div className="relative flex items-center justify-center px-5 border-b border-border/20">
             <button
               type="button"
               onClick={nextState}
-              className="absolute h-7 -top-7 flex flex-col items-center justify-center gap-1 py-1 px-6 rounded-t-md bg-background/95 backdrop-blur transition-colors hover:bg-accent"
+              className="absolute h-7 -top-7 flex flex-col items-center justify-center gap-1 py-1 px-6 rounded-t-xl bg-background/75 backdrop-blur-xl transition-all duration-200 hover:bg-background/85 active:bg-background/90"
               aria-label={getAriaLabel(viewState, "mobile")}
             >
               <Image
                 src={ChevronIcon}
                 alt=""
-                className={`w-5 h-3 transform transition-transform duration-280 ${getChevronRotation(
+                className={`w-5 h-3 transform transition-transform duration-280 opacity-80 ${getChevronRotation(
                   viewState,
                   "mobile"
                 )}`}
@@ -95,10 +95,10 @@ export function ResponsiveSidebar({
           transition: "transform 280ms cubic-bezier(.2,.8,.2,1)",
         }}
       >
-        <div className="h-full flex flex-row shadow-lg bg-background/95 backdrop-blur ">
+        <div className="h-full flex flex-row shadow-lg bg-background/75 backdrop-blur-xl">
           {/* Desktop content */}
           <div className="flex-1 flex flex-col overflow-hidden pt-2">
-            <div className="flex-1 mt-16 overflow-auto border-t border-t-foreground/10">
+            <div className="flex-1 mt-16 overflow-auto border-t border-border/20">
               {children}
             </div>
           </div>
@@ -107,13 +107,13 @@ export function ResponsiveSidebar({
           <button
             type="button"
             onClick={toggleDesktop}
-            className="absolute top-[45%] -right-8 h-20 w-8 flex items-center justify-center bg-background/95 hover:bg-accent transition-colors rounded-r-lg shadow-md"
+            className="absolute top-[45%] -right-8 h-20 w-8 flex items-center justify-center bg-background/75 backdrop-blur-xl hover:bg-background/85 active:bg-background/90 transition-all duration-200 rounded-r-xl shadow-lg"
             aria-label={getAriaLabel(viewState, "desktop")}
           >
             <Image
               src={ChevronIcon}
               alt=""
-              className={`w-4 h-3 transform transition-transform duration-280 ${getChevronRotation(
+              className={`w-4 h-3 transform transition-transform duration-280 opacity-80 ${getChevronRotation(
                 viewState,
                 "desktop"
               )}`}

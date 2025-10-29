@@ -15,7 +15,7 @@ export function ErrorDisplay({
   className = "",
 }: ErrorDisplayProps) {
   return (
-    <div className={`rounded-md bg-destructive/10 p-5 ${className}`}>
+    <div className={`rounded-xl bg-destructive/10 p-5 ${className}`}>
       <div className="flex">
         <div className="flex-shrink-0">
           <svg
@@ -42,7 +42,7 @@ export function ErrorDisplay({
                 <button
                   type="button"
                   onClick={onRetry}
-                  className="text-sm font-medium text-destructive hover:opacity-80"
+                  className="text-sm font-medium text-destructive hover:opacity-70 active:opacity-50 transition-all duration-200"
                 >
                   Try again
                 </button>
@@ -51,7 +51,7 @@ export function ErrorDisplay({
                 <button
                   type="button"
                   onClick={onDismiss}
-                  className="text-sm font-medium text-destructive hover:opacity-80"
+                  className="text-sm font-medium text-destructive hover:opacity-70 active:opacity-50 transition-all duration-200"
                 >
                   Dismiss
                 </button>

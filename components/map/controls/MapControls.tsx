@@ -25,18 +25,18 @@ export function MapControls({
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       {/* Compass and Location Controls Group */}
-      <div className="flex flex-col bg-card/95 backdrop-blur-sm rounded-lg border shadow-md overflow-hidden">
+      <div className="flex flex-col bg-background/75 backdrop-blur-xl rounded-xl shadow-lg overflow-hidden">
         {/* Compass Control */}
         {onResetNorth && (
           <Button
             variant="ghost"
             size="icon"
             onClick={onResetNorth}
-            className="h-9 w-9 rounded-none hover:bg-accent border-b transition-colors"
+            className="h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 border-b border-border/20 transition-all duration-200"
             aria-label="Reset north"
             type="button"
           >
-            <Compass className="h-4 w-4 text-foreground" strokeWidth={2} />
+            <Compass className="h-5 w-5 text-foreground/80" strokeWidth={2} />
           </Button>
         )}
 
@@ -47,9 +47,9 @@ export function MapControls({
             size="icon"
             onClick={onGeolocate}
             className={cn(
-              "h-9 w-9 rounded-none hover:bg-accent transition-colors",
+              "h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200",
               isGeolocating &&
-                "bg-primary text-primary-foreground hover:bg-primary/90"
+                "bg-primary/90 text-primary-foreground hover:bg-primary active:bg-primary/80"
             )}
             aria-label="Get current location"
             type="button"
@@ -57,7 +57,7 @@ export function MapControls({
           >
             <Navigation
               className={cn(
-                "h-4 w-4 text-foreground",
+                "h-5 w-5 text-foreground/80",
                 isGeolocating && "text-primary-foreground animate-pulse"
               )}
               strokeWidth={2}
@@ -66,26 +66,27 @@ export function MapControls({
         )}
       </div>
 
-      <div className="hidden md:flex flex-col bg-card/95 backdrop-blur-sm rounded-lg border shadow-md overflow-hidden">
+      {/* Zoom Controls */}
+      <div className="hidden md:flex flex-col bg-background/75 backdrop-blur-xl rounded-xl shadow-lg overflow-hidden">
         <Button
           variant="ghost"
           size="icon"
           onClick={onZoomIn}
-          className="h-9 w-9 rounded-none hover:bg-accent border-b transition-colors"
+          className="h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 border-b border-border/20 transition-all duration-200"
           aria-label="Zoom in"
           type="button"
         >
-          <Plus className="h-4 w-4 text-foreground" strokeWidth={2} />
+          <Plus className="h-5 w-5 text-foreground/80" strokeWidth={2} />
         </Button>
         <Button
           variant="ghost"
           size="icon"
           onClick={onZoomOut}
-          className="h-9 w-9 rounded-none hover:bg-accent transition-colors"
+          className="h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200"
           aria-label="Zoom out"
           type="button"
         >
-          <Minus className="h-4 w-4 text-foreground" strokeWidth={2} />
+          <Minus className="h-5 w-5 text-foreground/80" strokeWidth={2} />
         </Button>
       </div>
     </div>
