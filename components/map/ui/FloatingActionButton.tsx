@@ -19,7 +19,7 @@ export function FloatingActionButton({
   return (
     <button
       type="button"
-      className={`flex items-center justify-center p-3 bg-slate-950 text-white rounded-full shadow-lg transition-all duration-200 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${className}`}
+      className={`flex items-center justify-center p-3 bg-primary text-primary-foreground rounded-full shadow-lg transition-all duration-200 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${className}`}
       onClick={onClick}
       disabled={disabled}
       aria-label={alt}

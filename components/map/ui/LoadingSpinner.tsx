@@ -16,7 +16,7 @@ export function LoadingSpinner({ size = "md", className = "" }: LoadingSpinnerPr
     <div role="status" className={`flex items-center justify-center ${className}`}>
       <svg
         aria-hidden="true"
-        className={`inline ${sizeClasses[size]} text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300`}
+        className={`inline ${sizeClasses[size]} text-muted animate-spin fill-foreground`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

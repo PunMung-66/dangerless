@@ -48,13 +48,13 @@ export function ResponsiveSidebar({
           transition: "transform 280ms cubic-bezier(.2,.8,.2,1)",
         }}
       >
-        <div className="h-full flex flex-col shadow-lg rounded-t-lg bg-white/95 dark:bg-slate-950/95 backdrop-blur">
-          {/* Mobile header with toggle button */}
-          <div className="relative flex items-center justify-center px-4 py-3 border-b border-slate-200 dark:border-slate-800">
+        <div className="h-full flex flex-col shadow-lg rounded-t-lg bg-background/95 backdrop-blur">
+          {/* Handle bar */}
+          <div className="relative flex items-center justify-center px-5 py-3 border-b border-b-foreground/10">
             <button
               type="button"
               onClick={nextState}
-              className="absolute h-7 -top-7 flex flex-col items-center justify-center gap-1 py-1 px-6 rounded-t-md bg-white/95 dark:bg-slate-950/95 backdrop-blur transition-colors hover:bg-slate-50 dark:hover:bg-slate-900"
+              className="absolute h-7 -top-7 flex flex-col items-center justify-center gap-1 py-1 px-6 rounded-t-md bg-background/95 backdrop-blur transition-colors hover:bg-accent"
               aria-label={getAriaLabel(viewState, 'mobile')}
             >
               <Image
@@ -91,10 +91,10 @@ export function ResponsiveSidebar({
           transition: "transform 280ms cubic-bezier(.2,.8,.2,1)",
         }}
       >
-        <div className="h-full flex flex-row shadow-lg bg-white/95 dark:bg-slate-950/95 backdrop-blur">
+        <div className="h-full flex flex-row shadow-lg bg-background/95 backdrop-blur">
           {/* Desktop content */}
           <div className="flex-1 flex flex-col overflow-hidden">
-            <div className="flex-1 mt-16 overflow-auto border-t border-slate-200 dark:border-slate-800">
+            <div className="flex-1 mt-16 overflow-auto border-t border-t-foreground/10">
               {children}
             </div>
           </div>
@@ -103,7 +103,7 @@ export function ResponsiveSidebar({
           <button
             type="button"
             onClick={toggleDesktop}
-            className="absolute top-[45%] -right-8 h-20 w-8 flex items-center justify-center bg-white/95 dark:bg-slate-950/95 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors rounded-r-lg shadow-md"
+            className="absolute top-[45%] -right-8 h-20 w-8 flex items-center justify-center bg-background/95 hover:bg-accent transition-colors rounded-r-lg shadow-md"
             aria-label={getAriaLabel(viewState, 'desktop')}
           >
             <Image

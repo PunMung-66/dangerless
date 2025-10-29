@@ -17,8 +17,8 @@ export function SearchResultItem({
     <button
       type="button"
       onClick={onClick}
-      className={`w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors ${
-        isSelected ? "bg-slate-100 dark:bg-slate-700" : ""
+      className={`w-full text-left px-3 py-2 hover:bg-accent transition-colors ${
+        isSelected ? "bg-accent" : ""
       } text-xs whitespace-normal break-words`}
     >
       <div className="flex items-start gap-2">

@@ -18,8 +18,8 @@ const MapCanvas = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-full bg-slate-100 dark:bg-slate-800 animate-pulse flex items-center justify-center">
-        <span className="text-slate-500">Loading map...</span>
+      <div className="w-full h-full bg-muted animate-pulse flex items-center justify-center">
+        <span className="text-muted-foreground">Loading map...</span>
       </div>
     ),
   }
@@ -31,7 +31,7 @@ function MapPageContent() {
   return (
     <div className="relative w-full h-screen">
       {/* Search bar */}
-      <MapSearchBar className="absolute z-20 px-2 py-4 sm:px-4 transition-transform duration-300" />
+      <MapSearchBar className="absolute z-20 px-5 py-4 sm:px-5 transition-transform duration-300" />
 
       {/* Detail sidebar - only show when not in search mode */}
       {!isSearchMode && (

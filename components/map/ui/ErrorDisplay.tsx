@@ -15,11 +15,11 @@ export function ErrorDisplay({
   className = "" 
 }: ErrorDisplayProps) {
   return (
-    <div className={`rounded-md bg-red-50 p-4 dark:bg-red-900/20 ${className}`}>
+    <div className={`rounded-md bg-destructive/10 p-5 ${className}`}>
       <div className="flex">
         <div className="flex-shrink-0">
           <svg
-            className="h-5 w-5 text-red-400"
+            className="h-5 w-5 text-destructive"
             viewBox="0 0 20 20"
             fill="currentColor"
             aria-hidden="true"
@@ -32,10 +32,10 @@ export function ErrorDisplay({
           </svg>
         </div>
         <div className="ml-3 flex-1">
-          <h3 className="text-sm font-medium text-red-800 dark:text-red-200">
+          <h3 className="text-sm font-medium text-destructive">
             {getErrorTitle(error.type)}
           </h3>
-          <p className="mt-1 text-sm text-red-700 dark:text-red-300">
+          <p className="mt-1 text-sm text-muted-foreground">
             {error.message}
           </p>
           {(onRetry || onDismiss) && (
@@ -44,7 +44,7 @@ export function ErrorDisplay({
                 <button
                   type="button"
                   onClick={onRetry}
-                  className="text-sm font-medium text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300"
+                  className="text-sm font-medium text-destructive hover:opacity-80"
                 >
                   Try again
                 </button>
@@ -53,7 +53,7 @@ export function ErrorDisplay({
                 <button
                   type="button"
                   onClick={onDismiss}
-                  className="text-sm font-medium text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300"
+                  className="text-sm font-medium text-destructive hover:opacity-80"
                 >
                   Dismiss
                 </button>

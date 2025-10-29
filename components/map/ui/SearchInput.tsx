@@ -31,7 +31,7 @@ export function SearchInput({
 
   return (
     <form onSubmit={handleSubmit} className={`flex ${className}`}>
-      <div className="flex items-center w-full rounded-lg overflow-hidden bg-white text-black dark:bg-slate-950 dark:text-white shadow-md">
+      <div className="flex items-center w-full rounded-lg overflow-hidden bg-background shadow-md border border-input">
         {loading ? (
           <LoadingSpinner size="sm" className="px-2" />
         ) : (
@@ -51,7 +51,7 @@ export function SearchInput({
         )}
         <input
           aria-label="Search place"
-          className="w-full p-2 text-xs border-b-1 border-gray-300 focus:outline-none bg-inherit disabled:opacity-50"
+          className="w-full p-2 text-xs focus:outline-none bg-inherit disabled:opacity-50"
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange(e.target.value)}
