@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useRef } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+} from "react";
 import type { MapCoordinate, MapBounds, NominatimResult } from "@/types/map";
 import { MAP_CONFIG } from "@/lib/map/constants";
 
@@ -42,21 +48,51 @@ export function MapViewProvider({ children }: MapViewProviderProps) {
     selectedLocation: null,
   });
 
+  // Get user's current location on mount
+  useEffect(() => {
+    if (typeof window !== "undefined" && "geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLocation: MapCoordinate = [
+            position.coords.longitude,
+            position.coords.latitude,
+          ];
+          setState((prev) => ({
+            ...prev,
+            center: userLocation,
+            zoom: MAP_CONFIG.SELECTED_ZOOM,
+          }));
+        },
+        (error) => {
+          console.warn("Failed to get user location:", error.message);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        }
+      );
+    }
+  }, []);
+
   const setCenter = useCallback((center: MapCoordinate) => {
-    setState(prev => ({ ...prev, center }));
+    setState((prev) => ({ ...prev, center }));
   }, []);
 
   const setZoom = useCallback((zoom: number) => {
-    setState(prev => ({ ...prev, zoom }));
+    setState((prev) => ({ ...prev, zoom }));
   }, []);
 
   const setBounds = useCallback((bounds: MapBounds | null) => {
-    setState(prev => ({ ...prev, bounds }));
+    setState((prev) => ({ ...prev, bounds }));
   }, []);
 
-  const setSelectedLocation = useCallback((selectedLocation: NominatimResult | null) => {
-    setState(prev => ({ ...prev, selectedLocation }));
-  }, []);
+  const setSelectedLocation = useCallback(
+    (selectedLocation: NominatimResult | null) => {
+      setState((prev) => ({ ...prev, selectedLocation }));
+    },
+    []
+  );
 
   const focusOnLocation = useCallback((location: NominatimResult) => {
     const centerLon = parseFloat(location.lon);
@@ -64,19 +100,27 @@ export function MapViewProvider({ children }: MapViewProviderProps) {
     const center: MapCoordinate = [centerLon, centerLat];
 
     let bounds: MapBounds | null = null;
-    
+
     if (location.boundingbox && location.boundingbox.length === 4) {
       const bbox = location.boundingbox
-        .map(s => parseFloat(s))
+        .map((s) => parseFloat(s))
         .filter((n): n is number => !isNaN(n));
 
       if (bbox.length === 4) {
-        const [south, north, west, east] = bbox as [number, number, number, number];
-        bounds = [[west, south], [east, north]];
+        const [south, north, west, east] = bbox as [
+          number,
+          number,
+          number,
+          number
+        ];
+        bounds = [
+          [west, south],
+          [east, north],
+        ];
       }
     }
 
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       center,
       zoom: bounds ? prev.zoom : MAP_CONFIG.SELECTED_ZOOM,
@@ -105,8 +149,6 @@ export function MapViewProvider({ children }: MapViewProviderProps) {
   };
 
   return (
-    <MapViewContext.Provider value={value}>
-      {children}
-    </MapViewContext.Provider>
+    <MapViewContext.Provider value={value}>{children}</MapViewContext.Provider>
   );
 }

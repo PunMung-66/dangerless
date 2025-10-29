@@ -3,9 +3,12 @@ import maplibregl from "maplibre-gl";
 import { useMapView } from "../contexts";
 import { MAP_CONFIG } from "../constants";
 
-export function useMapInstance(containerRef: React.RefObject<HTMLDivElement | null>) {
+export function useMapInstance(
+  containerRef: React.RefObject<HTMLDivElement | null>
+) {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const { center, zoom, bounds } = useMapView();
+  const isInitialized = useRef(false);
 
   // Initialize map
   useEffect(() => {
@@ -32,8 +35,8 @@ export function useMapInstance(containerRef: React.RefObject<HTMLDivElement | nu
           },
         ],
       },
-      center: MAP_CONFIG.DEFAULT_CENTER,
-      zoom: MAP_CONFIG.DEFAULT_ZOOM,
+      center: center,
+      zoom: zoom,
     });
 
     mapRef.current = map;
@@ -58,28 +61,22 @@ export function useMapInstance(containerRef: React.RefObject<HTMLDivElement | nu
       "bottom-left"
     );
 
-    // Initial zoom animation
+    // Mark as initialized after map loads
     map.once("load", () => {
-      try {
-        map.easeTo({ 
-          zoom: MAP_CONFIG.DEFAULT_ZOOM, 
-          duration: MAP_CONFIG.ZOOM_ANIMATION_DURATION 
-        });
-      } catch (e) {
-        console.warn("Zoom animation failed", e);
-      }
+      isInitialized.current = true;
     });
 
     return () => {
       map.remove();
       mapRef.current = null;
+      isInitialized.current = false;
     };
-  }, [containerRef]);
+  }, [containerRef, center, zoom]);
 
   // Update map view when context changes
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return;
+    if (!map || !isInitialized.current) return;
 
     if (bounds) {
       map.fitBounds(bounds, {
