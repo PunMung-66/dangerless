@@ -1,5 +1,9 @@
-import { MapProvider } from "@/contexts/mapcontext";
+import { MapProvider, MapStageProvider } from "@/contexts/mapcontext";
 
 export default function MapLayout({ children }: { children: React.ReactNode }) {
-  return <MapProvider>{children}</MapProvider>;
+  return (
+    <MapProvider>
+      <MapStageProvider>{children}</MapStageProvider>
+    </MapProvider>
+  );
 }

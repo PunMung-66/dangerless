@@ -21,7 +21,7 @@ type DetailBarProps = {
 
 export default function DetailBar({
   initialState,
-  initialOpen = false,
+  initialOpen = true,
   collapsedHeight = 0,
   expandedHeight1 = 300,
   expandedHeight2 = 500,
@@ -31,7 +31,7 @@ export default function DetailBar({
 }: DetailBarProps) {
   // viewState: 0 collapsed, 1 partial expanded, 2 full expanded
   const initial =
-    typeof initialState === "number" ? initialState : initialOpen ? 2 : 0;
+    typeof initialState === "number" ? initialState : initialOpen ? 1 : 0;
   const [viewState, setViewState] = useState<0 | 1 | 2>(initial as 0 | 1 | 2);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
