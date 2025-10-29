@@ -33,25 +33,25 @@ export function SearchInput({
     <form onSubmit={handleSubmit} className={`flex ${className}`}>
       <div className="flex items-center w-full rounded-lg overflow-hidden bg-background shadow-md border border-input">
         {loading ? (
-          <LoadingSpinner size="sm" className="px-2" />
+          <LoadingSpinner size="sm" className="px-3" />
         ) : (
           <button
             type="submit"
-            className="flex-shrink-0 px-2 hover:opacity-70 transition-opacity disabled:opacity-50"
+            className="flex-shrink-0 px-3 hover:opacity-70 transition-opacity disabled:opacity-50"
             disabled={disabled || loading}
             aria-label="Search"
           >
             <Image
               src={IconSearch}
               alt=""
-              className="inline-block"
+              className="inline-block w-4 h-4"
               aria-hidden="true"
             />
           </button>
         )}
         <input
           aria-label="Search place"
-          className="w-full p-2 text-xs focus:outline-none bg-inherit disabled:opacity-50"
+          className="w-full py-2.5 pr-3 text-sm focus:outline-none bg-inherit disabled:opacity-50 placeholder:text-muted-foreground"
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange(e.target.value)}

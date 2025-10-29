@@ -50,7 +50,7 @@ export function ResponsiveSidebar({
       >
         <div className="h-full flex flex-col shadow-lg rounded-t-lg bg-background/95 backdrop-blur">
           {/* Handle bar */}
-          <div className="relative flex items-center justify-center px-5 py-3 border-b border-b-foreground/10">
+          <div className="relative flex items-center justify-center px-5 border-b border-b-foreground/10">
             <button
               type="button"
               onClick={nextState}
@@ -88,16 +88,16 @@ export function ResponsiveSidebar({
 
       {/* Desktop version (left sidebar) */}
       <div
-        className={`hidden lg:block absolute top-0 left-0 h-full z-10 ${className}`}
+        className={`hidden lg:block absolute top-0 left-0 h-full z-10 ${className} `}
         style={{
           width: DESKTOP.EXPANDED_WIDTH,
           transform: `translateX(${viewState > 0 ? 0 : closedTranslateX}px)`,
           transition: "transform 280ms cubic-bezier(.2,.8,.2,1)",
         }}
       >
-        <div className="h-full flex flex-row shadow-lg bg-background/95 backdrop-blur">
+        <div className="h-full flex flex-row shadow-lg bg-background/95 backdrop-blur ">
           {/* Desktop content */}
-          <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 flex flex-col overflow-hidden pt-2">
             <div className="flex-1 mt-16 overflow-auto border-t border-t-foreground/10">
               {children}
             </div>

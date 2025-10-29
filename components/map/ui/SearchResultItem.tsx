@@ -17,15 +17,15 @@ export function SearchResultItem({
     <button
       type="button"
       onClick={onClick}
-      className={`w-full text-left px-3 py-2 hover:bg-accent transition-colors ${
+      className={`w-full text-left px-3 py-2.5 hover:bg-accent transition-colors ${
         isSelected ? "bg-accent" : ""
-      } text-xs whitespace-normal break-words`}
+      } text-sm whitespace-normal break-words`}
     >
       <div className="flex items-start gap-2">
         <Image
           src={IconLOC}
           alt=""
-          className="flex-shrink-0 mt-0.5"
+          className="flex-shrink-0 mt-0.5 w-4 h-4"
           aria-hidden="true"
         />
         <span className="flex-1">{displayName}</span>
