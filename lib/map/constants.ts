@@ -62,21 +62,21 @@ export const MAP_LAYER_STYLES = {
     dark: {
       version: 8 as const,
       sources: {
-        "osm-dark-tiles": {
+        "dark-tiles": {
           type: "raster" as const,
           tiles: [
-            "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}.png",
+            "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
           ],
           tileSize: 256,
         },
       },
       layers: [
         {
-          id: "osm-dark-tiles",
+          id: "dark-tiles",
           type: "raster" as const,
-          source: "osm-dark-tiles",
+          source: "dark-tiles",
           minzoom: 0,
-          maxzoom: 20,
+          maxzoom: 16,
         },
       ],
     },
