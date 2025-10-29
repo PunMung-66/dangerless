@@ -7,7 +7,6 @@ import { MapSearchBar } from "@/components/map/MapSearchBar";
 import { ResponsiveSidebar } from "@/components/map/ResponsiveSidebar";
 import { MapSidebar } from "@/components/map/MapSidebar";
 import { FloatingActionButton } from "@/components/map/ui";
-import IconPEN from "@/assets/logo/icon-pen.svg";
 
 // Dynamically import map to avoid SSR issues
 const MapCanvas = dynamic(
@@ -46,7 +45,6 @@ function MapPageContent() {
       {/* Floating action button */}
       <FloatingActionButton
         onClick={toggleAddNews}
-        icon={IconPEN}
         alt="Add News"
         className="absolute bottom-12 right-1 sm:right-3 z-30"
       />
