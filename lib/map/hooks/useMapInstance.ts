@@ -28,6 +28,7 @@ export function useMapInstance(
       style: mapStyle,
       center: center,
       zoom: zoom,
+      attributionControl: false,
     });
 
     mapRef.current = map;
