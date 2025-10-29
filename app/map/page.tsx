@@ -1,33 +1,63 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import React from "react";
-import DetailBar from "@/components/map/detail-bar";
-import MapCommonButton from "@/components/map/map-common-button";
-import IconPEN from '../../assets/logo/icon-pen.svg';
-import MainSearchbar from "../../components/map/main-searchbar";
-const MapComponent = dynamic(() => import("../../components/map/map"), {
-  ssr: false,
-});
-import { useMapStage } from "../../contexts/mapcontext";
+import dynamic from "next/dynamic";
+import { MapProvider, useMapMode } from "@/lib/map/contexts";
+import { MapSearchBar } from "@/components/map/MapSearchBar";
+import { ResponsiveSidebar } from "@/components/map/ResponsiveSidebar";
+import { MapSidebar } from "@/components/map/MapSidebar";
+import { FloatingActionButton } from "@/components/map/ui";
+import IconPEN from "@/assets/logo/icon-pen.svg";
+
+// Dynamically import map to avoid SSR issues
+const MapCanvas = dynamic(
+  () =>
+    import("@/components/map/MapCanvas").then((mod) => ({
+      default: mod.MapCanvas,
+    })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full bg-slate-100 dark:bg-slate-800 animate-pulse flex items-center justify-center">
+        <span className="text-slate-500">Loading map...</span>
+      </div>
+    ),
+  }
+);
+
+function MapPageContent() {
+  const { isSearchMode, toggleAddNews } = useMapMode();
+
+  return (
+    <div className="relative w-full h-screen">
+      {/* Search bar */}
+      <MapSearchBar className="absolute z-20 px-2 py-4 sm:px-4 transition-transform duration-300" />
+
+      {/* Detail sidebar - only show when not in search mode */}
+      {!isSearchMode && (
+        <ResponsiveSidebar>
+          <MapSidebar />
+        </ResponsiveSidebar>
+      )}
+
+      {/* Map canvas */}
+      <MapCanvas />
+
+      {/* Floating action button */}
+      <FloatingActionButton
+        onClick={toggleAddNews}
+        icon={IconPEN}
+        alt="Add News"
+        className="absolute bottom-12 right-1 sm:right-3 z-30"
+      />
+    </div>
+  );
+}
 
 export default function MapPage() {
-  const { stage, setStage } = useMapStage();
   return (
-    <>
-      <div>
-        <MainSearchbar />
-        {(stage !== "search") && <DetailBar />}
-      </div>
-      <div className="relative w-full h-screen">
-        <MapComponent />
-        <MapCommonButton
-          onClick={() => setStage(stage === "addnew" ? "search" : "addnew")}
-          className="absolute bottom-12 right-1 sm:right-3"
-          icon={IconPEN}
-          alt="Add News Icon"
-        />
-      </div>
-    </>
+    <MapProvider>
+      <MapPageContent />
+    </MapProvider>
   );
 }
