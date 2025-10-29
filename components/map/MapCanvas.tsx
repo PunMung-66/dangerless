@@ -10,7 +10,7 @@ import {
   useMapControls,
   useUserLocation,
 } from "@/lib/map/hooks";
-import { MapControls } from "./controls";
+import { MapControls, LayerSelector } from "./controls";
 import { useMapView } from "@/lib/map/contexts";
 
 export function MapCanvas() {
@@ -40,7 +40,8 @@ export function MapCanvas() {
 
       {/* Custom Map Controls - show when map is ready */}
       {isReady && (
-        <div className="absolute top-4 right-4 z-[1000] pointer-events-auto">
+        <div className="absolute top-4 right-4 z-[1000] pointer-events-auto flex flex-col gap-2">
+          <LayerSelector />
           <MapControls
             onZoomIn={handleZoomIn}
             onZoomOut={handleZoomOut}

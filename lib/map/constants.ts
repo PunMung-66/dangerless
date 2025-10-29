@@ -1,9 +1,9 @@
 export const MAP_MODES = {
-  SEARCH: 'search',
-  SCOUTING: 'scouting', 
-  NEWS: 'news',
-  HISTORY: 'history',
-  ADD_NEWS: 'addnew'
+  SEARCH: "search",
+  SCOUTING: "scouting",
+  NEWS: "news",
+  HISTORY: "history",
+  ADD_NEWS: "addnew",
 } as const;
 
 export const DETAIL_BAR_CONFIG = {
@@ -15,7 +15,7 @@ export const DETAIL_BAR_CONFIG = {
   DESKTOP: {
     COLLAPSED_WIDTH: 0,
     EXPANDED_WIDTH: 400,
-  }
+  },
 } as const;
 
 export const MAP_CONFIG = {
@@ -28,6 +28,188 @@ export const MAP_CONFIG = {
 } as const;
 
 export const API_CONFIG = {
-  GEOCODING_ENDPOINT: '/api/map',
-  NOMINATIM_BASE_URL: 'https://nominatim.openstreetmap.org',
+  GEOCODING_ENDPOINT: "/api/map",
+  NOMINATIM_BASE_URL: "https://nominatim.openstreetmap.org",
+} as const;
+
+export const MAP_LAYERS = {
+  STANDARD: "standard",
+  HYBRID: "hybrid",
+  SATELLITE: "satellite",
+} as const;
+
+export const MAP_LAYER_STYLES = {
+  [MAP_LAYERS.STANDARD]: {
+    light: {
+      version: 8 as const,
+      sources: {
+        "osm-tiles": {
+          type: "raster" as const,
+          tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+          tileSize: 256,
+        },
+      },
+      layers: [
+        {
+          id: "osm-tiles",
+          type: "raster" as const,
+          source: "osm-tiles",
+          minzoom: 0,
+          maxzoom: 19,
+        },
+      ],
+    },
+    dark: {
+      version: 8 as const,
+      sources: {
+        "osm-dark-tiles": {
+          type: "raster" as const,
+          tiles: [
+            "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}.png",
+          ],
+          tileSize: 256,
+        },
+      },
+      layers: [
+        {
+          id: "osm-dark-tiles",
+          type: "raster" as const,
+          source: "osm-dark-tiles",
+          minzoom: 0,
+          maxzoom: 20,
+        },
+      ],
+    },
+  },
+  [MAP_LAYERS.SATELLITE]: {
+    light: {
+      version: 8 as const,
+      sources: {
+        "satellite-tiles": {
+          type: "raster" as const,
+          tiles: [
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+          ],
+          tileSize: 256,
+        },
+      },
+      layers: [
+        {
+          id: "satellite-tiles",
+          type: "raster" as const,
+          source: "satellite-tiles",
+          minzoom: 0,
+          maxzoom: 19,
+        },
+      ],
+    },
+    dark: {
+      version: 8 as const,
+      sources: {
+        "satellite-tiles": {
+          type: "raster" as const,
+          tiles: [
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+          ],
+          tileSize: 256,
+        },
+      },
+      layers: [
+        {
+          id: "satellite-tiles",
+          type: "raster" as const,
+          source: "satellite-tiles",
+          minzoom: 0,
+          maxzoom: 19,
+        },
+      ],
+    },
+  },
+  [MAP_LAYERS.HYBRID]: {
+    light: {
+      version: 8 as const,
+      sources: {
+        "satellite-tiles": {
+          type: "raster" as const,
+          tiles: [
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+          ],
+          tileSize: 256,
+        },
+        "labels-tiles": {
+          type: "raster" as const,
+          tiles: [
+            "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+          ],
+          tileSize: 256,
+        },
+      },
+      layers: [
+        {
+          id: "satellite-tiles",
+          type: "raster" as const,
+          source: "satellite-tiles",
+          minzoom: 0,
+          maxzoom: 19,
+        },
+        {
+          id: "labels-tiles",
+          type: "raster" as const,
+          source: "labels-tiles",
+          minzoom: 0,
+          maxzoom: 19,
+        },
+      ],
+    },
+    dark: {
+      version: 8 as const,
+      sources: {
+        "satellite-tiles": {
+          type: "raster" as const,
+          tiles: [
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+          ],
+          tileSize: 256,
+        },
+        "labels-tiles": {
+          type: "raster" as const,
+          tiles: [
+            "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+          ],
+          tileSize: 256,
+        },
+      },
+      layers: [
+        {
+          id: "satellite-tiles",
+          type: "raster" as const,
+          source: "satellite-tiles",
+          minzoom: 0,
+          maxzoom: 19,
+        },
+        {
+          id: "labels-tiles",
+          type: "raster" as const,
+          source: "labels-tiles",
+          minzoom: 0,
+          maxzoom: 19,
+        },
+      ],
+    },
+  },
+};
+
+export const MAP_LAYER_INFO = {
+  [MAP_LAYERS.STANDARD]: {
+    name: "Standard",
+    description: "Classic street map",
+  },
+  [MAP_LAYERS.HYBRID]: {
+    name: "Hybrid",
+    description: "Satellite with labels",
+  },
+  [MAP_LAYERS.SATELLITE]: {
+    name: "Satellite",
+    description: "Aerial imagery",
+  },
 } as const;

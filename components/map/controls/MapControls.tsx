@@ -26,20 +26,6 @@ export function MapControls({
     <div className={cn("flex flex-col gap-2", className)}>
       {/* Compass and Location Controls Group */}
       <div className="flex flex-col bg-background/75 backdrop-blur-xl rounded-xl shadow-lg overflow-hidden">
-        {/* Compass Control */}
-        {onResetNorth && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onResetNorth}
-            className="h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 border-b border-border/20 transition-all duration-200"
-            aria-label="Reset north"
-            type="button"
-          >
-            <Compass className="h-5 w-5 text-foreground/80" strokeWidth={2} />
-          </Button>
-        )}
-
         {/* Geolocation Control */}
         {onGeolocate && (
           <Button
@@ -47,7 +33,7 @@ export function MapControls({
             size="icon"
             onClick={onGeolocate}
             className={cn(
-              "h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200",
+              "h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 border-b border-border/20 transition-all duration-200",
               isGeolocating &&
                 "bg-primary/90 text-primary-foreground hover:bg-primary active:bg-primary/80"
             )}
@@ -62,6 +48,20 @@ export function MapControls({
               )}
               strokeWidth={2}
             />
+          </Button>
+        )}
+
+        {/* Compass Control */}
+        {onResetNorth && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onResetNorth}
+            className="h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200"
+            aria-label="Reset north"
+            type="button"
+          >
+            <Compass className="h-5 w-5 text-foreground/80" strokeWidth={2} />
           </Button>
         )}
       </div>

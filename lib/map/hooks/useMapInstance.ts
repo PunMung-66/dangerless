@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
-import { useMapView } from "../contexts";
-import { MAP_CONFIG } from "../constants";
+import { useTheme } from "next-themes";
+import { useMapView, useMapLayer } from "../contexts";
+import { MAP_CONFIG, MAP_LAYER_STYLES } from "../constants";
 
 export function useMapInstance(
   containerRef: React.RefObject<HTMLDivElement | null>
 ) {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const { center, zoom, bounds } = useMapView();
+  const { layer } = useMapLayer();
+  const { theme, resolvedTheme } = useTheme();
   const isInitialized = useRef(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -15,27 +18,14 @@ export function useMapInstance(
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
+    // Determine which style to use based on theme and layer
+    const currentTheme = resolvedTheme || theme;
+    const isDark = currentTheme === "dark";
+    const mapStyle = MAP_LAYER_STYLES[layer]?.[isDark ? "dark" : "light"];
+
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: {
-        version: 8,
-        sources: {
-          "raster-tiles": {
-            type: "raster",
-            tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-            tileSize: 256,
-          },
-        },
-        layers: [
-          {
-            id: "osm-tiles",
-            type: "raster",
-            source: "raster-tiles",
-            minzoom: 0,
-            maxzoom: 19,
-          },
-        ],
-      },
+      style: mapStyle,
       center: center,
       zoom: zoom,
     });
@@ -46,7 +36,6 @@ export function useMapInstance(
     map.once("load", () => {
       isInitialized.current = true;
       setIsLoaded(true);
-      console.log("Map loaded and ready");
     });
 
     return () => {
@@ -55,7 +44,7 @@ export function useMapInstance(
       isInitialized.current = false;
       setIsLoaded(false);
     };
-  }, [containerRef, center, zoom]);
+  }, [containerRef, center, zoom, theme, resolvedTheme, layer]);
 
   // Update map view when context changes
   useEffect(() => {
@@ -75,6 +64,32 @@ export function useMapInstance(
       });
     }
   }, [center, zoom, bounds]);
+
+  // Update map style when theme or layer changes
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !isInitialized.current) return;
+
+    const currentTheme = resolvedTheme || theme;
+    const isDark = currentTheme === "dark";
+    const newStyle = MAP_LAYER_STYLES[layer]?.[isDark ? "dark" : "light"];
+
+    if (!newStyle) return;
+
+    // Store current view before changing style
+    const currentCenter = map.getCenter();
+    const currentZoom = map.getZoom();
+
+    map.setStyle(newStyle);
+
+    // Restore view after style loads
+    map.once("style.load", () => {
+      map.jumpTo({
+        center: currentCenter,
+        zoom: currentZoom,
+      });
+    });
+  }, [theme, resolvedTheme, layer]);
 
   return {
     map: mapRef.current,

@@ -1,4 +1,4 @@
-import { MAP_MODES } from "@/lib/map/constants";
+import { MAP_MODES, MAP_LAYERS } from "@/lib/map/constants";
 
 export type NominatimResult = {
   place_id?: number | string;
@@ -20,6 +20,8 @@ export type NominatimResult = {
 export type MapMode = (typeof MAP_MODES)[keyof typeof MAP_MODES];
 // Backward compatibility
 export type ModeKey = MapMode;
+
+export type MapLayer = (typeof MAP_LAYERS)[keyof typeof MAP_LAYERS];
 
 export type ModeMenu = {
   key: MapMode;
