@@ -15,6 +15,7 @@ interface MapViewState {
   zoom: number;
   bounds: MapBounds | null;
   selectedLocation: NominatimResult | null;
+  userLocation: MapCoordinate | null;
 }
 
 interface MapViewContextType extends MapViewState {
@@ -22,6 +23,7 @@ interface MapViewContextType extends MapViewState {
   setZoom: (zoom: number) => void;
   setBounds: (bounds: MapBounds | null) => void;
   setSelectedLocation: (location: NominatimResult | null) => void;
+  setUserLocation: (location: MapCoordinate | null) => void;
   focusOnLocation: (location: NominatimResult) => void;
   resetView: () => void;
 }
@@ -46,6 +48,7 @@ export function MapViewProvider({ children }: MapViewProviderProps) {
     zoom: MAP_CONFIG.DEFAULT_ZOOM,
     bounds: null,
     selectedLocation: null,
+    userLocation: null,
   });
 
   // Get user's current location on mount
@@ -94,6 +97,10 @@ export function MapViewProvider({ children }: MapViewProviderProps) {
     []
   );
 
+  const setUserLocation = useCallback((userLocation: MapCoordinate | null) => {
+    setState((prev) => ({ ...prev, userLocation }));
+  }, []);
+
   const focusOnLocation = useCallback((location: NominatimResult) => {
     const centerLon = parseFloat(location.lon);
     const centerLat = parseFloat(location.lat);
@@ -135,6 +142,7 @@ export function MapViewProvider({ children }: MapViewProviderProps) {
       zoom: MAP_CONFIG.DEFAULT_ZOOM,
       bounds: null,
       selectedLocation: null,
+      userLocation: null,
     });
   }, []);
 
@@ -144,6 +152,7 @@ export function MapViewProvider({ children }: MapViewProviderProps) {
     setZoom,
     setBounds,
     setSelectedLocation,
+    setUserLocation,
     focusOnLocation,
     resetView,
   };

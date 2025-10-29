@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
 import { useMapView } from "../contexts";
 import { MAP_CONFIG } from "../constants";
@@ -9,6 +9,7 @@ export function useMapInstance(
   const mapRef = useRef<maplibregl.Map | null>(null);
   const { center, zoom, bounds } = useMapView();
   const isInitialized = useRef(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Initialize map
   useEffect(() => {
@@ -41,35 +42,18 @@ export function useMapInstance(
 
     mapRef.current = map;
 
-    // Add controls
-    map.addControl(
-      new maplibregl.NavigationControl({
-        showCompass: true,
-        showZoom: true,
-      }),
-      "bottom-left"
-    );
-
-    map.addControl(
-      new maplibregl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true,
-        },
-        trackUserLocation: true,
-        showUserLocation: true,
-      }),
-      "bottom-left"
-    );
-
     // Mark as initialized after map loads
     map.once("load", () => {
       isInitialized.current = true;
+      setIsLoaded(true);
+      console.log("Map loaded and ready");
     });
 
     return () => {
       map.remove();
       mapRef.current = null;
       isInitialized.current = false;
+      setIsLoaded(false);
     };
   }, [containerRef, center, zoom]);
 
@@ -94,6 +78,6 @@ export function useMapInstance(
 
   return {
     map: mapRef.current,
-    isReady: Boolean(mapRef.current),
+    isReady: isLoaded && Boolean(mapRef.current),
   };
 }
