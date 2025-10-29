@@ -46,7 +46,7 @@ function MapPageContent() {
       <FloatingActionButton
         onClick={toggleAddNews}
         alt="Add News"
-        className="absolute bottom-12 right-1 sm:right-3 z-30"
+        className="absolute bottom-4 right-4 z-30"
       />
     </div>
   );
