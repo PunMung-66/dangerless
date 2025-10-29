@@ -1,26 +1,25 @@
-import { useState } from "react";
-import type { ModeKey } from "../../../types/map";
+import { useMapStage } from "@/contexts/mapcontext";
+import AddNewPage from "./addnews-mode";
 import HistoryPage from "./history-mode";
 import NewsPage from "./news-mode";
 import ScoutingPage from "./scouting-mode";
 import SelectMode from "./select-mode";
 
 export default function SideContent() {
-  const [selectMode, setSelectMode] = useState<ModeKey>("scouting");
+  const { stage, setStage } = useMapStage();
 
   return (
     <div className="">
-      <SelectMode
-        selectMode={selectMode}
-        setSelectMode={setSelectMode}
-      />
-      {selectMode === "scouting" && (
+      {stage === "addnew" ? (
+        <AddNewPage />
+      ) : (
         <>
-          <ScoutingPage />
+          <SelectMode selectMode={stage} setSelectMode={setStage} />
+          {stage === "scouting" && <ScoutingPage />}
+          {stage === "news" && <NewsPage />}
+          {stage === "history" && <HistoryPage />}
         </>
       )}
-      {selectMode === "news" && <NewsPage />}
-      {selectMode === "history" && <HistoryPage />}
     </div>
   );
 }

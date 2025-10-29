@@ -1,7 +1,7 @@
 import Image from "next/image";
-import React from "react";
+import { useState } from "react";
 import IconSearch from "../../assets/logo/icon-search.svg";
-import { useDataMap } from "../../contexts/mapcontext";
+import { useDataMap, useMapStage } from "../../contexts/mapcontext";
 import MapButton from "./map-button";
 import MapLoader from "./map-loader";
 
@@ -20,7 +20,8 @@ export default function MainSearchbar() {
     setSelectedIndex,
   } = useDataMap();
 
-  const [searchTerm, setSearchTerm] = React.useState<string | null>("");
+  const [searchTerm, setSearchTerm] = useState<string | null>("");
+  const { setStage } = useMapStage();
 
   async function onSearch(e?: React.FormEvent) {
     e?.preventDefault();
@@ -29,6 +30,7 @@ export default function MainSearchbar() {
     setResults(null);
     setSelectedIndex(null);
     setSearchTerm(query);
+    setStage("search");
     try {
       const res = await geocode(query, 1);
       if (!res) {
@@ -90,6 +92,7 @@ export default function MainSearchbar() {
                   onClick={() => {
                     setSelectedIndex(i);
                     setSearchTerm(null);
+                    setStage("scouting");
                   }}
                 />
               ))}

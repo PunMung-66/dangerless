@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState } from "react";
 import type { NominatimResult } from "../types/map";
+import type { ModeKey } from "../types/map";
 
 type MapContextType = {
   query: string;
@@ -75,4 +76,30 @@ export function MapProvider({ children }: { children: React.ReactNode }) {
   };
 
   return <MapContext.Provider value={value}>{children}</MapContext.Provider>;
+}
+
+type MapStageContextType = {
+  stage: ModeKey;
+  setStage: React.Dispatch<React.SetStateAction<ModeKey>>;
+};
+
+const MapStageContext = createContext<MapStageContextType | undefined>(undefined);
+
+export function useMapStage() {
+  const ctx = useContext(MapStageContext);
+  if (!ctx) throw new Error("useMapStage must be used within MapStageProvider");
+  return ctx;
+}
+
+export function MapStageProvider({
+  children
+}: {
+  children: React.ReactNode;
+}) {
+  const [stage, setStage] = useState<ModeKey>("search");
+  const value: MapStageContextType = {
+    stage,
+    setStage
+  };
+  return <MapStageContext.Provider value={value}>{children}</MapStageContext.Provider>;
 }

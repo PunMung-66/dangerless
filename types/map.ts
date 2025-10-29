@@ -15,7 +15,7 @@ export type NominatimResult = {
   };
 };
 
-export type ModeKey = "scouting" | "news" | "history";
+export type ModeKey = "scouting" | "news" | "history" | "addnew" | "search";
 
 export type ModeMenu = {
   key: ModeKey;

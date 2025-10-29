@@ -14,8 +14,6 @@ export default function SelectMode({
   selectMode: ModeKey;
   setSelectMode: React.Dispatch<React.SetStateAction<ModeKey>>;
 }) {
-  //   const [selectMode, setSelectMode] = useState<ModeKey>("scouting");
-
   return (
     <div className="flex space-x-4 mb-4">
       {ModeMenus.map((menu) => (
