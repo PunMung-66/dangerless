@@ -52,7 +52,7 @@ export function NavItem({
 
       {!isExpanded && showTooltip && (
         <div
-          className="absolute left-full ml-2 px-2 py-1 bg-foreground text-background text-xs rounded whitespace-nowrap pointer-events-none"
+          className="absolute left-full ml-4 px-3 py-2 bg-background/75 backdrop-blur-xl text-foreground/80 text-sm rounded-xl shadow-lg whitespace-nowrap pointer-events-none"
           style={{
             zIndex: Z_INDEX.TOOLTIP,
             top: "50%",
