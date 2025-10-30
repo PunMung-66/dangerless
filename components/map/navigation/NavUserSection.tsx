@@ -23,7 +23,23 @@ export function NavUserSection({
   isExpanded,
 }: NavUserSectionProps) {
   const [showLogout, setShowLogout] = useState(false);
+  const [menuPosition, setMenuPosition] = useState<"bottom" | "top">("bottom");
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (showLogout && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const menuHeight = 60; // Approximate height of the logout menu
+
+      if (spaceBelow < menuHeight && rect.top > menuHeight) {
+        setMenuPosition("top");
+      } else {
+        setMenuPosition("bottom");
+      }
+    }
+  }, [showLogout]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -71,6 +87,7 @@ export function NavUserSection({
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        ref={buttonRef}
         onClick={() => {
           setShowLogout(!showLogout);
           onProfileClick?.();
@@ -112,7 +129,8 @@ export function NavUserSection({
       {showLogout && (
         <div
           className={cn(
-            "absolute left-full ml-4 top-0 bg-background/95 backdrop-blur-xl border border-border/20 rounded-lg shadow-lg overflow-hidden w-48"
+            "absolute left-full ml-4 bg-background/75 backdrop-blur-xl rounded-xl shadow-lg overflow-hidden",
+            menuPosition === "bottom" ? "top-0" : "bottom-0"
           )}
           style={{ zIndex: Z_INDEX.TOOLTIP }}
         >
@@ -121,9 +139,13 @@ export function NavUserSection({
               setShowLogout(false);
               onLogout?.();
             }}
-            className="w-full px-3 py-2 flex items-center gap-2 hover:bg-foreground/10 active:bg-foreground/15 transition-colors text-left"
+            className="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200 text-left"
           >
-            <LogOut className="w-4 h-4 text-foreground/80" aria-hidden="true" />
+            <LogOut
+              className="w-5 h-5 text-foreground/80 flex-shrink-0"
+              aria-hidden="true"
+              strokeWidth={2}
+            />
             <span className="text-sm text-foreground/80">Logout</span>
           </button>
         </div>
