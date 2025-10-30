@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, Z_INDEX } from "@/lib/constants/navigation";
-import { NavItem, NavUserSection } from "./navigation";
+import { NavItem, NavUserSection, NavThemeSwitcher } from "./navigation";
 import type { UserData } from "@/types/navigation";
 import type { NavItemId } from "@/lib/constants/navigation";
 
@@ -49,7 +49,7 @@ export function NavigationBar({
           isExpanded={isExpanded}
         />
 
-        <div className="h-px bg-border/20 my-1" role="separator" />
+        <div className="h-px bg-border/40 my-1" role="separator" />
 
         {NAV_ITEMS.map((item) => (
           <NavItem
@@ -62,7 +62,11 @@ export function NavigationBar({
         ))}
       </div>
 
-      <div className="flex flex-col gap-1.5 p-2 pb-4 border-t border-border/20">
+      <div className="flex flex-col gap-1.5 p-2 pb-4">
+        <NavThemeSwitcher isExpanded={isExpanded} />
+
+        <div className="h-px bg-border/40 my-1" role="separator" />
+
         <NavUserSection
           user={user}
           onSignIn={onSignIn}

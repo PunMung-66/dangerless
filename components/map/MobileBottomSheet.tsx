@@ -1,17 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
-import { Newspaper, FileText, Palette } from "lucide-react";
+import { Newspaper, AlertTriangle } from "lucide-react";
 import { useDraggableSheet } from "@/lib/hooks/useDraggableSheet";
 import { Z_INDEX } from "@/lib/constants/navigation";
-import { DragHandle, CollapsibleSection, UserSection } from "./mobile";
+import { DragHandle, CollapsibleSection, UserSection, ThemeSwitcher } from "./mobile";
 import type { UserData } from "@/types/navigation";
 
 interface MobileBottomSheetProps {
   searchContent: React.ReactNode;
   newsContent: React.ReactNode;
   reportContent: React.ReactNode;
-  themeContent: React.ReactNode;
   user?: UserData | null;
   onSignIn?: () => void;
   onProfileClick?: () => void;
@@ -20,15 +19,13 @@ interface MobileBottomSheetProps {
 
 const SECTIONS = [
   { id: "news", icon: Newspaper, title: "News" },
-  { id: "report", icon: FileText, title: "Report" },
-  { id: "theme", icon: Palette, title: "Theme" },
+  { id: "report", icon: AlertTriangle, title: "Report" },
 ] as const;
 
 export function MobileBottomSheet({
   searchContent,
   newsContent,
   reportContent,
-  themeContent,
   user,
   onSignIn,
   onProfileClick,
@@ -53,7 +50,6 @@ export function MobileBottomSheet({
   const contentMap = {
     news: newsContent,
     report: reportContent,
-    theme: themeContent,
   };
 
   return (
@@ -92,6 +88,8 @@ export function MobileBottomSheet({
                 <div className="mt-2">{contentMap[section.id]}</div>
               </CollapsibleSection>
             ))}
+
+            <ThemeSwitcher />
 
             <UserSection
               user={user}

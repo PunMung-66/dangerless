@@ -6,14 +6,8 @@ import { MapProvider } from "@/lib/map/contexts";
 import { NavigationBar } from "@/components/map/NavigationBar";
 import { MobileBottomSheet } from "@/components/map/MobileBottomSheet";
 import { SidebarTray } from "@/components/map/SidebarTray";
-import {
-  SearchTray,
-  NewsTray,
-  ReportTray,
-  ThemeTray,
-} from "@/components/map/trays";
+import { SearchTray, NewsTray, ReportTray } from "@/components/map/trays";
 import { MapSearchBar } from "@/components/map/MapSearchBar";
-import { MobileThemeContent } from "@/components/map/MobileThemeContent";
 import { NewsMode } from "@/components/map/modes/NewsMode";
 import { AddNewsMode } from "@/components/map/modes/AddNewsMode";
 import { useAuth, formatUser, useNavigationState } from "@/lib/hooks";
@@ -38,7 +32,6 @@ const TRAY_CONFIG = [
   { id: "search", title: "Search", component: SearchTray },
   { id: "news", title: "News & Alerts", component: NewsTray },
   { id: "report", title: "Report Issue", component: ReportTray },
-  { id: "theme", title: "Theme", component: ThemeTray },
 ] as const;
 
 function MapPageContent() {
@@ -88,7 +81,6 @@ function MapPageContent() {
         searchContent={<MapSearchBar className="w-full" />}
         newsContent={<NewsMode />}
         reportContent={<AddNewsMode />}
-        themeContent={<MobileThemeContent />}
         user={formattedUser}
         onSignIn={signIn}
         onProfileClick={handleProfileClick}

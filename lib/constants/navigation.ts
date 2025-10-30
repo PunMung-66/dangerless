@@ -1,4 +1,4 @@
-import { Search, Newspaper, FileText, Palette } from "lucide-react";
+import { Search, Newspaper, AlertTriangle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 /**
@@ -44,8 +44,7 @@ export interface NavItem {
 export const NAV_ITEMS: readonly NavItem[] = [
   { id: "search", icon: Search, label: "Search" },
   { id: "news", icon: Newspaper, label: "News" },
-  { id: "report", icon: FileText, label: "Report" },
-  { id: "theme", icon: Palette, label: "Theme" },
+  { id: "report", icon: AlertTriangle, label: "Report" },
 ] as const;
 
 export type NavItemId = (typeof NAV_ITEMS)[number]["id"];
