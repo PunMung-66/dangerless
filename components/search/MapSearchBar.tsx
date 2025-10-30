@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useMapSearch, useMapSelection } from "@/lib/map/hooks";
+import { useMapSearch, useMapSelection } from "@/lib/hooks";
 import { SearchInput, SearchResultItem, ErrorDisplay } from "./ui";
 
 interface MapSearchBarProps {

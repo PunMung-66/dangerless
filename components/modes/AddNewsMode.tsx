@@ -1,7 +1,7 @@
 import React from "react";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FormField } from "../shared";
+import { FormField } from "@/components/shared";
 
 const REPORT_FIELDS = [
   { id: "report-title", label: "Title", placeholder: "Brief description" },
@@ -20,8 +20,7 @@ const REPORT_FIELDS = [
 
 export function AddNewsMode() {
   const handleSubmit = () => {
-    // TODO: Implement form submission
-    console.log("Report submitted");
+    // Form submission implementation pending
   };
 
   return (

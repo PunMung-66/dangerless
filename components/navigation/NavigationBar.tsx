@@ -3,12 +3,10 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, Z_INDEX } from "@/lib/constants/navigation";
-import {
-  NavItem,
-  NavUserSection,
-  NavThemeSwitcher,
-  NavLogo,
-} from "./navigation";
+import { NavItem } from "./NavItem";
+import { NavUserSection } from "./NavUserSection";
+import { NavThemeSwitcher } from "./NavThemeSwitcher";
+import { NavLogo } from "./NavLogo";
 import type { UserData } from "@/types/navigation";
 import type { NavItemId } from "@/lib/constants/navigation";
 

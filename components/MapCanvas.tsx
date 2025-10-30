@@ -9,9 +9,9 @@ import {
   useMapHighlights,
   useMapControls,
   useUserLocation,
-} from "@/lib/map/hooks";
-import { MapControls, LayerSelector } from "./controls";
-import { useMapView } from "@/lib/map/contexts";
+} from "@/lib/hooks";
+import { MapControls, LayerSelector } from "@/components/controls";
+import { useMapView } from "@/lib/contexts";
 
 interface MapCanvasProps {
   hideMobileControls?: boolean;

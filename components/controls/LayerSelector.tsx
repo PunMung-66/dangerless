@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { Layers, MapIcon, Globe, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useMapLayer } from "@/lib/map/contexts";
-import { MAP_LAYERS, MAP_LAYER_INFO } from "@/lib/map/constants";
+import { useMapLayer } from "@/lib/contexts";
+import { MAP_LAYERS, MAP_LAYER_INFO } from "@/lib/constants";
 import type { MapLayer } from "@/types/map";
 
 const LAYER_ICONS: Record<MapLayer, React.ReactNode> = {

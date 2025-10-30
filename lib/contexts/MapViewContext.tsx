@@ -8,7 +8,7 @@ import React, {
   useEffect,
 } from "react";
 import type { MapCoordinate, MapBounds, NominatimResult } from "@/types/map";
-import { MAP_CONFIG } from "@/lib/map/constants";
+import { MAP_CONFIG } from "@/lib/constants";
 
 interface MapViewState {
   center: MapCoordinate;

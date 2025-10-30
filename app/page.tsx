@@ -2,21 +2,21 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { MapProvider } from "@/lib/map/contexts";
-import { NavigationBar } from "@/components/map/NavigationBar";
-import { MobileBottomSheet } from "@/components/map/MobileBottomSheet";
-import { SidebarTray } from "@/components/map/SidebarTray";
-import { NewsTray, ReportTray } from "@/components/map/trays";
-import { MapSearchBar } from "@/components/map/MapSearchBar";
-import { NewsMode } from "@/components/map/modes/NewsMode";
-import { AddNewsMode } from "@/components/map/modes/AddNewsMode";
+import { MapProvider } from "@/lib/contexts";
+import { NavigationBar } from "@/components/navigation/NavigationBar";
+import { MobileBottomSheet } from "@/components/MobileBottomSheet";
+import { SidebarTray } from "@/components/SidebarTray";
+import { NewsTray, ReportTray } from "@/components/trays";
+import { MapSearchBar } from "@/components/search/MapSearchBar";
+import { NewsMode } from "@/components/modes/NewsMode";
+import { AddNewsMode } from "@/components/modes/AddNewsMode";
 import { useAuth, formatUser, useNavigationState } from "@/lib/hooks";
-import { NAV_BAR_WIDTH } from "@/lib/constants";
+import { NAV_BAR_WIDTH } from "@/lib/constants/navigation";
 import { ConfirmDialog } from "@/components/ui/dialog";
 
 const MapCanvas = dynamic(
   () =>
-    import("@/components/map/MapCanvas").then((mod) => ({
+    import("@/components/MapCanvas").then((mod) => ({
       default: mod.MapCanvas,
     })),
   {
@@ -58,8 +58,7 @@ function MapPageContent() {
     : navBarWidth + 16; // 16px gap from nav (matches map controls)
 
   const handleProfileClick = () => {
-    console.log("Profile clicked");
-    // TODO: Implement profile modal
+    // Profile modal implementation pending
   };
 
   const handleLogout = () => {

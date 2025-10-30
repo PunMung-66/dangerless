@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { AddNewsMode } from "../modes/AddNewsMode";
-import { TrayContainer, TrayHeader } from "../shared";
+import { AddNewsMode } from "@/components/modes/AddNewsMode";
+import { TrayContainer, TrayHeader } from "@/components/shared";
 
 export function ReportTray() {
   return (

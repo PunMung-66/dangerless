@@ -1,6 +1,6 @@
 import React from "react";
 import { Newspaper } from "lucide-react";
-import { EmptyState } from "../shared";
+import { EmptyState } from "@/components/shared";
 
 export function NewsMode() {
   const newsItems: any[] = [];

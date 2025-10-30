@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useCallback } from "react";
 import type { MapMode } from "@/types/map";
-import { MAP_MODES } from "@/lib/map/constants";
+import { MAP_MODES } from "@/lib/constants";
 
 interface MapModeContextType {
   mode: MapMode;

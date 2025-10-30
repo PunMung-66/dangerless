@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState } from "react";
 import type { MapLayer } from "@/types/map";
-import { MAP_LAYERS } from "@/lib/map/constants";
+import { MAP_LAYERS } from "@/lib/constants";
 
 interface MapLayerContextType {
   layer: MapLayer;

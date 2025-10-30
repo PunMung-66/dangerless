@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useCallback } from "react";
 import type { SearchState, MapError, NominatimResult } from "@/types/map";
-import { geocodingService } from "@/lib/map/services/geocoding";
+import { geocodingService } from "@/lib/services/geocoding";
 
 interface MapDataContextType extends SearchState {
   setQuery: (query: string) => void;
@@ -38,29 +38,29 @@ export function MapDataProvider({ children }: MapDataProviderProps) {
   });
 
   const setQuery = useCallback((query: string) => {
-    setState(prev => ({ ...prev, query }));
+    setState((prev) => ({ ...prev, query }));
   }, []);
 
   const setResults = useCallback((results: NominatimResult[] | null) => {
-    setState(prev => ({ ...prev, results }));
+    setState((prev) => ({ ...prev, results }));
   }, []);
 
   const setLoading = useCallback((loading: boolean) => {
-    setState(prev => ({ ...prev, loading }));
+    setState((prev) => ({ ...prev, loading }));
   }, []);
 
   const setError = useCallback((error: MapError | null) => {
-    setState(prev => ({ ...prev, error }));
+    setState((prev) => ({ ...prev, error }));
   }, []);
 
   const setSelectedIndex = useCallback((selectedIndex: number | null) => {
-    setState(prev => ({ ...prev, selectedIndex }));
+    setState((prev) => ({ ...prev, selectedIndex }));
   }, []);
 
   const search = useCallback(async (query: string) => {
     if (!query.trim()) return;
 
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       loading: true,
       error: null,
@@ -70,13 +70,13 @@ export function MapDataProvider({ children }: MapDataProviderProps) {
 
     try {
       const results = await geocodingService.geocode(query);
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         loading: false,
         results,
       }));
     } catch (error) {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         loading: false,
         error: error as MapError,
@@ -85,7 +85,7 @@ export function MapDataProvider({ children }: MapDataProviderProps) {
   }, []);
 
   const clearResults = useCallback(() => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       results: null,
       selectedIndex: null,
@@ -105,8 +105,6 @@ export function MapDataProvider({ children }: MapDataProviderProps) {
   };
 
   return (
-    <MapDataContext.Provider value={value}>
-      {children}
-    </MapDataContext.Provider>
+    <MapDataContext.Provider value={value}>{children}</MapDataContext.Provider>
   );
 }
