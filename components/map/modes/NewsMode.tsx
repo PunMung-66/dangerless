@@ -1,15 +1,19 @@
 import React from "react";
+import { Newspaper } from "lucide-react";
+import { EmptyState } from "../shared";
 
 export function NewsMode() {
+  const newsItems: any[] = [];
+
+  if (newsItems.length === 0) {
+    return (
+      <EmptyState icon={Newspaper} message="No news updates at the moment" />
+    );
+  }
+
   return (
-    <div className="p-5">
-      <h3 className="text-lg font-semibold mb-4">Latest News</h3>
-      <div className="text-sm text-muted-foreground">
-        <p>
-          Stay updated with the latest safety news and alerts in your selected
-          area.
-        </p>
-      </div>
+    <div className="space-y-2">
+      {/* News items will be rendered here when available */}
     </div>
   );
 }

@@ -1,14 +1,24 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
-import { MapProvider, useMapMode } from "@/lib/map/contexts";
+import { MapProvider } from "@/lib/map/contexts";
+import { NavigationBar } from "@/components/map/NavigationBar";
+import { MobileBottomSheet } from "@/components/map/MobileBottomSheet";
+import { SidebarTray } from "@/components/map/SidebarTray";
+import {
+  SearchTray,
+  NewsTray,
+  ReportTray,
+  ThemeTray,
+} from "@/components/map/trays";
 import { MapSearchBar } from "@/components/map/MapSearchBar";
-import { ResponsiveSidebar } from "@/components/map/ResponsiveSidebar";
-import { MapSidebar } from "@/components/map/MapSidebar";
-import { FloatingActionButton } from "@/components/map/ui";
+import { MobileThemeContent } from "@/components/map/MobileThemeContent";
+import { NewsMode } from "@/components/map/modes/NewsMode";
+import { AddNewsMode } from "@/components/map/modes/AddNewsMode";
+import { useAuth, formatUser, useNavigationState } from "@/lib/hooks";
+import { NAV_BAR_WIDTH } from "@/lib/constants";
 
-// Dynamically import map to avoid SSR issues
 const MapCanvas = dynamic(
   () =>
     import("@/components/map/MapCanvas").then((mod) => ({
@@ -24,30 +34,76 @@ const MapCanvas = dynamic(
   }
 );
 
+const TRAY_CONFIG = [
+  { id: "search", title: "Search", component: SearchTray },
+  { id: "news", title: "News & Alerts", component: NewsTray },
+  { id: "report", title: "Report Issue", component: ReportTray },
+  { id: "theme", title: "Theme", component: ThemeTray },
+] as const;
+
 function MapPageContent() {
-  const { isSearchMode, toggleAddNews } = useMapMode();
+  const { user, signIn } = useAuth();
+  const {
+    activeTray,
+    navBarExpanded,
+    toggleTray,
+    closeTray,
+    setNavBarExpanded,
+  } = useNavigationState();
+  const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
+
+  const formattedUser = formatUser(user);
+  const navBarWidth = navBarExpanded
+    ? NAV_BAR_WIDTH.EXPANDED
+    : NAV_BAR_WIDTH.COLLAPSED;
+
+  const handleProfileClick = () => {
+    console.log("Profile clicked");
+    // TODO: Implement profile modal
+  };
 
   return (
-    <div className="relative w-full h-screen">
-      {/* Search bar */}
-      <MapSearchBar className="absolute z-20 px-5 py-4 sm:px-5 transition-transform duration-300" />
-
-      {/* Detail sidebar - only show when not in search mode */}
-      {!isSearchMode && (
-        <ResponsiveSidebar>
-          <MapSidebar />
-        </ResponsiveSidebar>
-      )}
-
-      {/* Map canvas */}
-      <MapCanvas />
-
-      {/* Floating action button */}
-      <FloatingActionButton
-        onClick={toggleAddNews}
-        alt="Add News"
-        className="absolute bottom-4 right-4 z-30"
+    <div className="relative w-full h-screen overflow-hidden">
+      <NavigationBar
+        onItemClick={toggleTray}
+        user={formattedUser}
+        onSignIn={signIn}
+        onProfileClick={handleProfileClick}
+        onExpandChange={setNavBarExpanded}
       />
+
+      {TRAY_CONFIG.map(({ id, title, component: Component }) => (
+        <SidebarTray
+          key={id}
+          isOpen={activeTray === id}
+          onClose={closeTray}
+          title={title}
+          leftOffset={navBarWidth}
+        >
+          <Component />
+        </SidebarTray>
+      ))}
+
+      <MobileBottomSheet
+        searchContent={<MapSearchBar className="w-full" />}
+        newsContent={<NewsMode />}
+        reportContent={<AddNewsMode />}
+        themeContent={<MobileThemeContent />}
+        user={formattedUser}
+        onSignIn={signIn}
+        onProfileClick={handleProfileClick}
+        onExpandedChange={setIsMobileNavExpanded}
+      />
+
+      <div className="absolute inset-0">
+        <MapCanvas hideMobileControls={isMobileNavExpanded} />
+      </div>
+
+      <div className="hidden lg:block absolute top-6 left-20 right-6 z-30 max-w-md pointer-events-none">
+        <div className="pointer-events-auto">
+          <MapSearchBar className="w-full" />
+        </div>
+      </div>
     </div>
   );
 }

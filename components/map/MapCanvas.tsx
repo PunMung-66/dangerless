@@ -1,19 +1,23 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { cn } from "@/lib/utils";
 import {
   useMapInstance,
   useMapMarkers,
   useMapHighlights,
-  useMapSelection,
   useMapControls,
   useUserLocation,
 } from "@/lib/map/hooks";
 import { MapControls, LayerSelector } from "./controls";
 import { useMapView } from "@/lib/map/contexts";
 
-export function MapCanvas() {
+interface MapCanvasProps {
+  hideMobileControls?: boolean;
+}
+
+export function MapCanvas({ hideMobileControls = false }: MapCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { map, isReady } = useMapInstance(containerRef);
   const { selectedLocation, userLocation } = useMapView();
@@ -38,9 +42,13 @@ export function MapCanvas() {
         aria-label="Interactive map"
       />
 
-      {/* Custom Map Controls - show when map is ready */}
       {isReady && (
-        <div className="absolute top-4 right-4 z-[1000] pointer-events-auto flex flex-col gap-2">
+        <div
+          className={cn(
+            "absolute top-4 right-4 z-[1000] pointer-events-auto flex flex-col gap-2 transition-opacity duration-300",
+            hideMobileControls ? "opacity-0 lg:opacity-100" : "opacity-100"
+          )}
+        >
           <LayerSelector />
           <MapControls
             onZoomIn={handleZoomIn}
