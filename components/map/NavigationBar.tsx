@@ -17,6 +17,7 @@ interface NavigationBarProps {
   user?: UserData | null;
   onSignIn?: () => void;
   onProfileClick?: () => void;
+  onLogout?: () => void;
   onExpandChange?: (expanded: boolean) => void;
 }
 
@@ -25,6 +26,7 @@ export function NavigationBar({
   user,
   onSignIn,
   onProfileClick,
+  onLogout,
   onExpandChange,
 }: NavigationBarProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -66,10 +68,12 @@ export function NavigationBar({
 
         <div className="h-px bg-border/40 my-1" role="separator" />
 
+        {/* User Section */}
         <NavUserSection
           user={user}
           onSignIn={onSignIn}
           onProfileClick={onProfileClick}
+          onLogout={onLogout}
           isExpanded={isExpanded}
         />
       </div>

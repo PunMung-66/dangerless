@@ -19,6 +19,7 @@ interface MobileBottomSheetProps {
   user?: UserData | null;
   onSignIn?: () => void;
   onProfileClick?: () => void;
+  onLogout?: () => void;
   onExpandedChange?: (isExpanded: boolean) => void;
 }
 
@@ -34,6 +35,7 @@ export function MobileBottomSheet({
   user,
   onSignIn,
   onProfileClick,
+  onLogout,
   onExpandedChange,
 }: MobileBottomSheetProps) {
   const {
@@ -100,6 +102,7 @@ export function MobileBottomSheet({
               user={user}
               onSignIn={onSignIn}
               onProfileClick={onProfileClick}
+              onLogout={onLogout}
             />
           </div>
         )}

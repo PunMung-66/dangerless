@@ -1,4 +1,6 @@
-import { LogIn, User } from "lucide-react";
+"use client";
+
+import { LogIn, LogOut, User } from "lucide-react";
 import Image from "next/image";
 import type { UserData } from "@/types/navigation";
 
@@ -6,12 +8,14 @@ interface UserSectionProps {
   user?: UserData | null;
   onSignIn?: () => void;
   onProfileClick?: () => void;
+  onLogout?: () => void;
 }
 
 export function UserSection({
   user,
   onSignIn,
   onProfileClick,
+  onLogout,
 }: UserSectionProps) {
   if (!user) {
     return (
@@ -29,7 +33,7 @@ export function UserSection({
   }
 
   return (
-    <div className="mt-1">
+    <div className="mt-1 space-y-2">
       <button
         onClick={onProfileClick}
         className="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-foreground/5 active:bg-foreground/10 transition-all"
@@ -55,6 +59,16 @@ export function UserSection({
           <p className="text-sm font-medium text-foreground/90">{user.name}</p>
           <p className="text-xs text-foreground/60">{user.email}</p>
         </div>
+      </button>
+
+      {/* Logout button */}
+      <button
+        onClick={onLogout}
+        className="flex items-center justify-center gap-2 w-full p-3 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20 active:bg-destructive/30 transition-all"
+        aria-label="Sign out"
+      >
+        <LogOut className="w-4 h-4" aria-hidden="true" />
+        <span className="text-sm font-medium">Sign Out</span>
       </button>
     </div>
   );

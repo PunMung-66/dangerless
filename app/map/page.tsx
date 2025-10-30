@@ -34,7 +34,7 @@ const TRAY_CONFIG = [
 ] as const;
 
 function MapPageContent() {
-  const { user, signIn } = useAuth();
+  const { user, signIn, signOut } = useAuth();
   const {
     activeTray,
     navBarExpanded,
@@ -60,6 +60,10 @@ function MapPageContent() {
     // TODO: Implement profile modal
   };
 
+  const handleLogout = async () => {
+    await signOut();
+  };
+
   return (
     <div className="relative w-full h-screen overflow-hidden">
       <NavigationBar
@@ -67,6 +71,7 @@ function MapPageContent() {
         user={formattedUser}
         onSignIn={signIn}
         onProfileClick={handleProfileClick}
+        onLogout={handleLogout}
         onExpandChange={setNavBarExpanded}
       />
 
@@ -89,6 +94,7 @@ function MapPageContent() {
         user={formattedUser}
         onSignIn={signIn}
         onProfileClick={handleProfileClick}
+        onLogout={handleLogout}
         onExpandedChange={setIsMobileNavExpanded}
       />
 
