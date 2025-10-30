@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, Z_INDEX } from "@/lib/constants/navigation";
-import { NavItem, NavUserSection, NavThemeSwitcher } from "./navigation";
+import {
+  NavItem,
+  NavUserSection,
+  NavThemeSwitcher,
+  NavLogo,
+} from "./navigation";
 import type { UserData } from "@/types/navigation";
 import type { NavItemId } from "@/lib/constants/navigation";
 
@@ -42,12 +46,7 @@ export function NavigationBar({
       aria-label="Main navigation"
     >
       <div className="flex-1 flex flex-col gap-1.5 p-2 pt-4">
-        <NavItem
-          icon={isExpanded ? ChevronLeft : ChevronRight}
-          label={isExpanded ? "Collapse" : "Expand"}
-          onClick={toggleExpand}
-          isExpanded={isExpanded}
-        />
+        <NavLogo isExpanded={isExpanded} onClick={toggleExpand} />
 
         <div className="h-px bg-border/40 my-1" role="separator" />
 
