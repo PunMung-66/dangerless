@@ -1,4 +1,4 @@
-import { Search, Newspaper, AlertTriangle } from "lucide-react";
+import { Newspaper, AlertTriangle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 /**
@@ -42,7 +42,6 @@ export interface NavItem {
  * Main navigation items with their icons and labels
  */
 export const NAV_ITEMS: readonly NavItem[] = [
-  { id: "search", icon: Search, label: "Search" },
   { id: "news", icon: Newspaper, label: "News" },
   { id: "report", icon: AlertTriangle, label: "Report" },
 ] as const;

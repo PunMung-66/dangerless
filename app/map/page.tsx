@@ -6,7 +6,7 @@ import { MapProvider } from "@/lib/map/contexts";
 import { NavigationBar } from "@/components/map/NavigationBar";
 import { MobileBottomSheet } from "@/components/map/MobileBottomSheet";
 import { SidebarTray } from "@/components/map/SidebarTray";
-import { SearchTray, NewsTray, ReportTray } from "@/components/map/trays";
+import { NewsTray, ReportTray } from "@/components/map/trays";
 import { MapSearchBar } from "@/components/map/MapSearchBar";
 import { NewsMode } from "@/components/map/modes/NewsMode";
 import { AddNewsMode } from "@/components/map/modes/AddNewsMode";
@@ -29,7 +29,6 @@ const MapCanvas = dynamic(
 );
 
 const TRAY_CONFIG = [
-  { id: "search", title: "Search", component: SearchTray },
   { id: "news", title: "News & Alerts", component: NewsTray },
   { id: "report", title: "Report Issue", component: ReportTray },
 ] as const;
@@ -49,6 +48,12 @@ function MapPageContent() {
   const navBarWidth = navBarExpanded
     ? NAV_BAR_WIDTH.EXPANDED
     : NAV_BAR_WIDTH.COLLAPSED;
+
+  // Calculate search box left offset based on nav + tray
+  const TRAY_WIDTH = 400;
+  const searchBoxLeft = activeTray
+    ? navBarWidth + TRAY_WIDTH + 16 // 16px gap from tray (matches map controls)
+    : navBarWidth + 16; // 16px gap from nav (matches map controls)
 
   const handleProfileClick = () => {
     console.log("Profile clicked");
@@ -91,7 +96,10 @@ function MapPageContent() {
         <MapCanvas hideMobileControls={isMobileNavExpanded} />
       </div>
 
-      <div className="hidden lg:block absolute top-6 left-20 right-6 z-30 max-w-md pointer-events-none">
+      <div
+        className="hidden lg:block absolute top-4 right-4 z-30 max-w-md pointer-events-none transition-all duration-300"
+        style={{ left: `${searchBoxLeft}px` }}
+      >
         <div className="pointer-events-auto">
           <MapSearchBar className="w-full" />
         </div>
