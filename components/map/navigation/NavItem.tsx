@@ -25,25 +25,29 @@ export function NavItem({
       <button
         onClick={onClick}
         className={cn(
-          "w-full h-10 rounded-lg hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200 flex items-center",
+          "w-full h-10 rounded-lg hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-300 flex items-center overflow-hidden",
           isExpanded ? "gap-3 px-3 justify-start" : "justify-center"
         )}
         aria-label={label}
         onMouseEnter={() => !isExpanded && setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
       >
-        {customIcon ||
-          (Icon && (
-            <Icon
-              className="w-5 h-5 shrink-0 text-foreground/80"
-              aria-hidden="true"
-            />
-          ))}
-        {isExpanded && (
-          <span className="text-sm text-foreground/80 whitespace-nowrap">
-            {label}
-          </span>
-        )}
+        <div className="shrink-0">
+          {customIcon ||
+            (Icon && (
+              <Icon className="w-5 h-5 text-foreground/80" aria-hidden="true" />
+            ))}
+        </div>
+        <span
+          className={cn(
+            "text-sm text-foreground/80 whitespace-nowrap transition-all duration-300",
+            isExpanded
+              ? "opacity-100 max-w-xs"
+              : "opacity-0 max-w-0 overflow-hidden"
+          )}
+        >
+          {label}
+        </span>
       </button>
 
       {!isExpanded && showTooltip && (
