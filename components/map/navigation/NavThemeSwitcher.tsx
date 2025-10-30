@@ -13,12 +13,28 @@ interface NavThemeSwitcherProps {
 export function NavThemeSwitcher({ isExpanded }: NavThemeSwitcherProps) {
   const [mounted, setMounted] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [menuPosition, setMenuPosition] = useState<"bottom" | "top">("bottom");
   const { theme, setTheme } = useTheme();
   const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (showMenu && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const menuHeight = 150; // Approximate height of the menu
+
+      if (spaceBelow < menuHeight && rect.top > menuHeight) {
+        setMenuPosition("top");
+      } else {
+        setMenuPosition("bottom");
+      }
+    }
+  }, [showMenu]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -71,6 +87,7 @@ export function NavThemeSwitcher({ isExpanded }: NavThemeSwitcherProps) {
   return (
     <div className="relative" ref={menuRef}>
       <button
+        ref={buttonRef}
         onClick={() => setShowMenu(!showMenu)}
         className={cn(
           "w-full h-10 rounded-lg hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-300 flex items-center overflow-hidden",
@@ -95,7 +112,10 @@ export function NavThemeSwitcher({ isExpanded }: NavThemeSwitcherProps) {
 
       {showMenu && (
         <div
-          className="absolute left-full ml-4 top-0 bg-background/95 backdrop-blur-xl border border-border/20 rounded-lg shadow-lg overflow-hidden w-40"
+          className={cn(
+            "absolute left-full ml-4 bg-background/75 backdrop-blur-xl rounded-xl shadow-lg overflow-hidden",
+            menuPosition === "bottom" ? "top-0" : "bottom-0"
+          )}
           style={{ zIndex: Z_INDEX.TOOLTIP }}
         >
           {themes.map(({ id, label, icon: ThemeIcon }) => (
@@ -105,17 +125,37 @@ export function NavThemeSwitcher({ isExpanded }: NavThemeSwitcherProps) {
                 setTheme(id);
                 setShowMenu(false);
               }}
-              className="w-full px-3 py-2 flex items-center gap-2 hover:bg-foreground/10 active:bg-foreground/15 transition-colors text-left"
+              className={cn(
+                "w-full px-3 py-2.5 flex items-center gap-3 hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200 text-left border-b border-border/20 last:border-b-0",
+                theme === id &&
+                  "bg-primary/90 text-primary-foreground hover:bg-primary active:bg-primary/80"
+              )}
             >
               <ThemeIcon
-                className="w-4 h-4 text-foreground/80"
+                className={cn(
+                  "w-5 h-5 flex-shrink-0",
+                  theme === id
+                    ? "text-primary-foreground"
+                    : "text-foreground/80"
+                )}
                 aria-hidden="true"
+                strokeWidth={2}
               />
-              <span className="text-sm text-foreground/80 flex-1">{label}</span>
+              <span
+                className={cn(
+                  "text-sm flex-1",
+                  theme === id
+                    ? "text-primary-foreground"
+                    : "text-foreground/80"
+                )}
+              >
+                {label}
+              </span>
               {theme === id && (
                 <Check
-                  className="w-4 h-4 text-foreground/80"
+                  className="w-5 h-5 text-primary-foreground"
                   aria-hidden="true"
+                  strokeWidth={2}
                 />
               )}
             </button>
