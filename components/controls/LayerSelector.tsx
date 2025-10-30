@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useMapLayer } from "@/lib/contexts";
 import { MAP_LAYERS, MAP_LAYER_INFO } from "@/lib/constants";
+import { Z_INDEX } from "@/lib/constants/navigation";
 import type { MapLayer } from "@/types/map";
 
 const LAYER_ICONS: Record<MapLayer, typeof MapIcon> = {
@@ -17,9 +18,19 @@ const LAYER_ICONS: Record<MapLayer, typeof MapIcon> = {
 export function LayerSelector() {
   const { layer, setLayer } = useMapLayer();
   const [isOpen, setIsOpen] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   const [menuPosition, setMenuPosition] = useState<"bottom" | "top">("bottom");
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const getTooltipPosition = () => {
+    if (!buttonRef.current) return {};
+    const rect = buttonRef.current.getBoundingClientRect();
+    return {
+      top: rect.top + rect.height / 2,
+      right: window.innerWidth - rect.left + 16, // 16px = mr-4
+    };
+  };
 
   useEffect(() => {
     if (isOpen && buttonRef.current) {
@@ -63,6 +74,8 @@ export function LayerSelector() {
           variant="ghost"
           size="icon"
           onClick={() => setIsOpen(!isOpen)}
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
           className={cn(
             "h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200",
             isOpen && "bg-foreground/10"
@@ -81,7 +94,7 @@ export function LayerSelector() {
             "absolute right-full mr-4 min-w-[200px] bg-background/75 backdrop-blur-xl rounded-xl shadow-lg overflow-hidden",
             menuPosition === "bottom" ? "top-0" : "bottom-0"
           )}
-          style={{ zIndex: 1000 }}
+          style={{ zIndex: Z_INDEX.TOOLTIP }}
         >
           {(Object.keys(MAP_LAYERS) as Array<keyof typeof MAP_LAYERS>).map(
             (key) => {
@@ -133,6 +146,21 @@ export function LayerSelector() {
               );
             }
           )}
+        </div>
+      )}
+
+      {/* Fixed position tooltip */}
+      {showTooltip && !isOpen && (
+        <div
+          className="fixed px-3 py-2 bg-background/75 backdrop-blur-xl text-foreground/80 text-sm rounded-xl shadow-lg whitespace-nowrap pointer-events-none"
+          style={{
+            ...getTooltipPosition(),
+            zIndex: Z_INDEX.TOOLTIP,
+            transform: "translateY(-50%)",
+          }}
+          role="tooltip"
+        >
+          Map Style
         </div>
       )}
     </div>

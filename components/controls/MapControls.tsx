@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Plus, Minus, Compass, Navigation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Z_INDEX } from "@/lib/constants/navigation";
 
 interface MapControlsProps {
   onZoomIn?: () => void;
@@ -22,47 +23,74 @@ export function MapControls({
   className,
   isGeolocating = false,
 }: MapControlsProps) {
+  const [showGeolocateTooltip, setShowGeolocateTooltip] = useState(false);
+  const [showCompassTooltip, setShowCompassTooltip] = useState(false);
+
+  const geolocateRef = React.useRef<HTMLButtonElement>(null);
+  const compassRef = React.useRef<HTMLButtonElement>(null);
+
+  const getTooltipPosition = (
+    buttonRef: React.RefObject<HTMLButtonElement | null>
+  ) => {
+    if (!buttonRef.current) return {};
+    const rect = buttonRef.current.getBoundingClientRect();
+    return {
+      top: rect.top + rect.height / 2,
+      right: window.innerWidth - rect.left + 16, // 16px = mr-4
+    };
+  };
+
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       {/* Compass and Location Controls Group */}
       <div className="flex flex-col bg-background/75 backdrop-blur-xl rounded-xl shadow-lg overflow-hidden">
         {/* Geolocation Control */}
         {onGeolocate && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onGeolocate}
-            className={cn(
-              "h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 border-b border-border/20 transition-all duration-200",
-              isGeolocating &&
-                "bg-primary/90 text-primary-foreground hover:bg-primary active:bg-primary/80"
-            )}
-            aria-label="Get current location"
-            type="button"
-            disabled={isGeolocating}
-          >
-            <Navigation
+          <div className="relative">
+            <Button
+              ref={geolocateRef}
+              variant="ghost"
+              size="icon"
+              onClick={onGeolocate}
+              onMouseEnter={() => setShowGeolocateTooltip(true)}
+              onMouseLeave={() => setShowGeolocateTooltip(false)}
               className={cn(
-                "h-5 w-5 text-foreground/80",
-                isGeolocating && "text-primary-foreground animate-pulse"
+                "h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 border-b border-border/20 transition-all duration-200",
+                isGeolocating &&
+                  "bg-primary/90 text-primary-foreground hover:bg-primary active:bg-primary/80"
               )}
-              strokeWidth={2}
-            />
-          </Button>
+              aria-label="Get current location"
+              type="button"
+              disabled={isGeolocating}
+            >
+              <Navigation
+                className={cn(
+                  "h-5 w-5 text-foreground/80",
+                  isGeolocating && "text-primary-foreground animate-pulse"
+                )}
+                strokeWidth={2}
+              />
+            </Button>
+          </div>
         )}
 
         {/* Compass Control */}
         {onResetNorth && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onResetNorth}
-            className="h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200"
-            aria-label="Reset north"
-            type="button"
-          >
-            <Compass className="h-5 w-5 text-foreground/80" strokeWidth={2} />
-          </Button>
+          <div className="relative">
+            <Button
+              ref={compassRef}
+              variant="ghost"
+              size="icon"
+              onClick={onResetNorth}
+              onMouseEnter={() => setShowCompassTooltip(true)}
+              onMouseLeave={() => setShowCompassTooltip(false)}
+              className="h-10 w-10 rounded-none hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200"
+              aria-label="Reset north"
+              type="button"
+            >
+              <Compass className="h-5 w-5 text-foreground/80" strokeWidth={2} />
+            </Button>
+          </div>
         )}
       </div>
 
@@ -78,6 +106,7 @@ export function MapControls({
         >
           <Plus className="h-5 w-5 text-foreground/80" strokeWidth={2} />
         </Button>
+
         <Button
           variant="ghost"
           size="icon"
@@ -89,6 +118,35 @@ export function MapControls({
           <Minus className="h-5 w-5 text-foreground/80" strokeWidth={2} />
         </Button>
       </div>
+
+      {/* Fixed position tooltips */}
+      {showGeolocateTooltip && !isGeolocating && (
+        <div
+          className="fixed px-3 py-2 bg-background/75 backdrop-blur-xl text-foreground/80 text-sm rounded-xl shadow-lg whitespace-nowrap pointer-events-none"
+          style={{
+            ...getTooltipPosition(geolocateRef),
+            zIndex: Z_INDEX.TOOLTIP,
+            transform: "translateY(-50%)",
+          }}
+          role="tooltip"
+        >
+          My Location
+        </div>
+      )}
+
+      {showCompassTooltip && (
+        <div
+          className="fixed px-3 py-2 bg-background/75 backdrop-blur-xl text-foreground/80 text-sm rounded-xl shadow-lg whitespace-nowrap pointer-events-none"
+          style={{
+            ...getTooltipPosition(compassRef),
+            zIndex: Z_INDEX.TOOLTIP,
+            transform: "translateY(-50%)",
+          }}
+          role="tooltip"
+        >
+          Reset North
+        </div>
+      )}
     </div>
   );
 }
