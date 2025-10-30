@@ -24,7 +24,10 @@ export function NavItem({
     <div className="relative group">
       <button
         onClick={onClick}
-        className="w-full h-10 rounded-lg hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200 flex items-center gap-3 px-3"
+        className={cn(
+          "w-full h-10 rounded-lg hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200 flex items-center",
+          isExpanded ? "gap-3 px-3 justify-start" : "justify-center"
+        )}
         aria-label={label}
         onMouseEnter={() => !isExpanded && setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
@@ -36,14 +39,11 @@ export function NavItem({
               aria-hidden="true"
             />
           ))}
-        <span
-          className={cn(
-            "text-sm text-foreground/80 transition-all duration-300 whitespace-nowrap",
-            isExpanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
-          )}
-        >
-          {label}
-        </span>
+        {isExpanded && (
+          <span className="text-sm text-foreground/80 whitespace-nowrap">
+            {label}
+          </span>
+        )}
       </button>
 
       {!isExpanded && showTooltip && (

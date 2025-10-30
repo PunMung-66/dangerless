@@ -21,7 +21,8 @@ export function NavUserSection({
       <button
         onClick={onSignIn}
         className={cn(
-          "w-full h-10 rounded-lg hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200 flex items-center gap-3 px-3"
+          "w-full h-10 rounded-lg hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200 flex items-center",
+          isExpanded ? "gap-3 px-3 justify-start" : "justify-center"
         )}
         aria-label="Sign in to your account"
       >
@@ -29,14 +30,11 @@ export function NavUserSection({
           className="w-5 h-5 shrink-0 text-foreground/80"
           aria-hidden="true"
         />
-        <span
-          className={cn(
-            "text-sm text-foreground/80 transition-all duration-300 whitespace-nowrap",
-            isExpanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
-          )}
-        >
-          Sign In
-        </span>
+        {isExpanded && (
+          <span className="text-sm text-foreground/80 whitespace-nowrap">
+            Sign In
+          </span>
+        )}
       </button>
     );
   }
@@ -45,12 +43,13 @@ export function NavUserSection({
     <button
       onClick={onProfileClick}
       className={cn(
-        "w-full h-10 rounded-lg hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200 flex items-center gap-3 px-3"
+        "w-full h-10 rounded-lg hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200 flex items-center",
+        isExpanded ? "gap-3 px-3 justify-start" : "justify-center"
       )}
       aria-label={`View profile for ${user.name}`}
     >
       {user.image ? (
-        <div className="w-6 h-6 rounded-full overflow-hidden">
+        <div className="w-6 h-6 rounded-full overflow-hidden shrink-0">
           <Image
             src={user.image}
             alt=""
@@ -66,14 +65,11 @@ export function NavUserSection({
           aria-hidden="true"
         />
       )}
-      <span
-        className={cn(
-          "text-sm text-foreground/80 transition-all duration-300 whitespace-nowrap",
-          isExpanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
-        )}
-      >
-        {user.name}
-      </span>
+      {isExpanded && (
+        <span className="text-sm text-foreground/80 whitespace-nowrap">
+          {user.name}
+        </span>
+      )}
     </button>
   );
 }
