@@ -1,4 +1,4 @@
-import { MAP_MODES, MAP_LAYERS } from "@/lib/map/constants";
+import { MAP_MODES, MAP_LAYERS } from "@/lib/constants";
 
 export type NominatimResult = {
   place_id?: number | string;
