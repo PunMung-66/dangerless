@@ -4,7 +4,12 @@ import { useEffect } from "react";
 import { Newspaper, AlertTriangle } from "lucide-react";
 import { useDraggableSheet } from "@/lib/hooks/useDraggableSheet";
 import { Z_INDEX } from "@/lib/constants/navigation";
-import { DragHandle, CollapsibleSection, UserSection, ThemeSwitcher } from "./mobile";
+import {
+  DragHandle,
+  CollapsibleSection,
+  UserSection,
+  ThemeSwitcher,
+} from "./mobile";
 import type { UserData } from "@/types/navigation";
 
 interface MobileBottomSheetProps {

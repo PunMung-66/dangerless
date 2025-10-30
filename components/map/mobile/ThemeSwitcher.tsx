@@ -20,7 +20,8 @@ export function ThemeSwitcher() {
     const themes = ["light", "dark", "system"];
     const currentTheme = theme || "system";
     const currentIndex = themes.indexOf(currentTheme);
-    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % themes.length;
+    const nextIndex =
+      currentIndex === -1 ? 0 : (currentIndex + 1) % themes.length;
     const nextTheme = themes[nextIndex];
     if (nextTheme) {
       setTheme(nextTheme);
