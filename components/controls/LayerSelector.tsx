@@ -1,22 +1,53 @@
 "use client";
 
-import React, { useState } from "react";
-import { Layers, MapIcon, Globe, MapPin } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Layers, MapIcon, Globe, MapPin, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useMapLayer } from "@/lib/contexts";
 import { MAP_LAYERS, MAP_LAYER_INFO } from "@/lib/constants";
 import type { MapLayer } from "@/types/map";
 
-const LAYER_ICONS: Record<MapLayer, React.ReactNode> = {
-  [MAP_LAYERS.STANDARD]: <MapIcon className="h-4 w-4" />,
-  [MAP_LAYERS.SATELLITE]: <Globe className="h-4 w-4" />,
-  [MAP_LAYERS.HYBRID]: <MapPin className="h-4 w-4" />,
+const LAYER_ICONS: Record<MapLayer, typeof MapIcon> = {
+  [MAP_LAYERS.STANDARD]: MapIcon,
+  [MAP_LAYERS.SATELLITE]: Globe,
+  [MAP_LAYERS.HYBRID]: MapPin,
 };
 
 export function LayerSelector() {
   const { layer, setLayer } = useMapLayer();
   const [isOpen, setIsOpen] = useState(false);
+  const [menuPosition, setMenuPosition] = useState<"bottom" | "top">("bottom");
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const menuHeight = 200; // Approximate height of the menu
+
+      if (spaceBelow < menuHeight && rect.top > menuHeight) {
+        setMenuPosition("top");
+      } else {
+        setMenuPosition("bottom");
+      }
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [isOpen]);
 
   const handleLayerChange = (newLayer: MapLayer) => {
     setLayer(newLayer);
@@ -24,10 +55,11 @@ export function LayerSelector() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={menuRef}>
       {/* Main Button */}
       <div className="bg-background/75 backdrop-blur-xl rounded-xl shadow-lg overflow-hidden">
         <Button
+          ref={buttonRef}
           variant="ghost"
           size="icon"
           onClick={() => setIsOpen(!isOpen)}
@@ -44,72 +76,64 @@ export function LayerSelector() {
 
       {/* Layer Options Panel */}
       {isOpen && (
-        <>
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 z-[999]"
-            onClick={() => setIsOpen(false)}
-          />
+        <div
+          className={cn(
+            "absolute right-full mr-4 min-w-[200px] bg-background/75 backdrop-blur-xl rounded-xl shadow-lg overflow-hidden",
+            menuPosition === "bottom" ? "top-0" : "bottom-0"
+          )}
+          style={{ zIndex: 1000 }}
+        >
+          {(Object.keys(MAP_LAYERS) as Array<keyof typeof MAP_LAYERS>).map(
+            (key) => {
+              const layerValue = MAP_LAYERS[key];
+              const layerInfo = MAP_LAYER_INFO[layerValue];
+              const isActive = layer === layerValue;
+              const LayerIcon = LAYER_ICONS[layerValue];
 
-          {/* Panel */}
-          <div className="absolute right-0 top-12 z-[1000] min-w-[200px] bg-background/95 backdrop-blur-xl rounded-xl shadow-lg overflow-hidden border border-border/20">
-            <div className="p-2 space-y-1">
-              {(Object.keys(MAP_LAYERS) as Array<keyof typeof MAP_LAYERS>).map(
-                (key) => {
-                  const layerValue = MAP_LAYERS[key];
-                  const layerInfo = MAP_LAYER_INFO[layerValue];
-                  const isActive = layer === layerValue;
-
-                  return (
-                    <button
-                      key={layerValue}
-                      onClick={() => handleLayerChange(layerValue)}
+              return (
+                <button
+                  key={layerValue}
+                  onClick={() => handleLayerChange(layerValue)}
+                  className={cn(
+                    "w-full px-3 py-2.5 flex items-center gap-3 hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-200 text-left border-b border-border/20 last:border-b-0",
+                    isActive &&
+                      "bg-primary/90 text-primary-foreground hover:bg-primary active:bg-primary/80"
+                  )}
+                >
+                  <LayerIcon
+                    className={cn(
+                      "w-5 h-5 flex-shrink-0",
+                      isActive
+                        ? "text-primary-foreground"
+                        : "text-foreground/80"
+                    )}
+                    aria-hidden="true"
+                    strokeWidth={2}
+                  />
+                  <div className="flex-1">
+                    <div
                       className={cn(
-                        "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-200",
+                        "text-sm",
                         isActive
-                          ? "bg-primary text-primary-foreground shadow-sm"
-                          : "hover:bg-foreground/5 text-foreground/80"
+                          ? "text-primary-foreground"
+                          : "text-foreground/80"
                       )}
                     >
-                      <div
-                        className={cn(
-                          "flex-shrink-0",
-                          isActive
-                            ? "text-primary-foreground"
-                            : "text-foreground/60"
-                        )}
-                      >
-                        {LAYER_ICONS[layerValue]}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div
-                          className={cn(
-                            "font-medium text-sm",
-                            isActive
-                              ? "text-primary-foreground"
-                              : "text-foreground"
-                          )}
-                        >
-                          {layerInfo.name}
-                        </div>
-                        <div
-                          className={cn(
-                            "text-xs",
-                            isActive
-                              ? "text-primary-foreground/80"
-                              : "text-foreground/60"
-                          )}
-                        >
-                          {layerInfo.description}
-                        </div>
-                      </div>
-                    </button>
-                  );
-                }
-              )}
-            </div>
-          </div>
-        </>
+                      {layerInfo.name}
+                    </div>
+                  </div>
+                  {isActive && (
+                    <Check
+                      className="w-5 h-5 text-primary-foreground"
+                      aria-hidden="true"
+                      strokeWidth={2}
+                    />
+                  )}
+                </button>
+              );
+            }
+          )}
+        </div>
       )}
     </div>
   );
