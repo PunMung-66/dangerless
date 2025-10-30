@@ -12,6 +12,7 @@ import { NewsMode } from "@/components/map/modes/NewsMode";
 import { AddNewsMode } from "@/components/map/modes/AddNewsMode";
 import { useAuth, formatUser, useNavigationState } from "@/lib/hooks";
 import { NAV_BAR_WIDTH } from "@/lib/constants";
+import { ConfirmDialog } from "@/components/ui/dialog";
 
 const MapCanvas = dynamic(
   () =>
@@ -43,6 +44,7 @@ function MapPageContent() {
     setNavBarExpanded,
   } = useNavigationState();
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   const formattedUser = formatUser(user);
   const navBarWidth = navBarExpanded
@@ -60,7 +62,11 @@ function MapPageContent() {
     // TODO: Implement profile modal
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
+    setShowLogoutDialog(true);
+  };
+
+  const confirmLogout = async () => {
     await signOut();
   };
 
@@ -110,6 +116,17 @@ function MapPageContent() {
           <MapSearchBar className="w-full" />
         </div>
       </div>
+
+      <ConfirmDialog
+        open={showLogoutDialog}
+        onOpenChange={setShowLogoutDialog}
+        title="Confirm Logout"
+        description="Are you sure you want to log out of your account?"
+        confirmLabel="Log Out"
+        cancelLabel="Cancel"
+        variant="destructive"
+        onConfirm={confirmLogout}
+      />
     </div>
   );
 }
