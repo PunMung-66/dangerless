@@ -1,24 +1,54 @@
 import React from "react";
+import { Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { FormField } from "../shared";
+
+const REPORT_FIELDS = [
+  { id: "report-title", label: "Title", placeholder: "Brief description" },
+  {
+    id: "report-location",
+    label: "Location",
+    placeholder: "Where is this happening?",
+  },
+  {
+    id: "report-description",
+    label: "Description",
+    placeholder: "Provide details...",
+    type: "textarea" as const,
+  },
+] as const;
 
 export function AddNewsMode() {
-  return (
-    <div className="p-5">
-      <h3 className="text-lg font-semibold mb-4">Report Safety Issue</h3>
-      <div className="space-y-4">
-        <div className="text-sm text-muted-foreground">
-          <p>
-            Help your community by reporting safety concerns or sharing
-            important safety information.
-          </p>
-        </div>
+  const handleSubmit = () => {
+    // TODO: Implement form submission
+    console.log("Report submitted");
+  };
 
-        {/* Placeholder for form */}
-        <div className="bg-foreground/5 p-5 rounded-xl">
-          <p className="text-sm text-muted-foreground">
-            Report form will be implemented here
-          </p>
-        </div>
+  return (
+    <form
+      className="space-y-3"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
+      {REPORT_FIELDS.map((field) => (
+        <FormField key={field.id} {...field} />
+      ))}
+
+      <Button
+        type="submit"
+        className="w-full rounded-xl h-10 bg-primary hover:bg-primary/90 transition-all shadow-md"
+      >
+        <Send className="w-4 h-4 mr-2" strokeWidth={2} />
+        Submit Report
+      </Button>
+
+      <div className="p-2.5 rounded-xl bg-foreground/5 border border-border/10">
+        <p className="text-xs text-foreground/60">
+          Reports are reviewed and shared with the community.
+        </p>
       </div>
-    </div>
+    </form>
   );
 }
