@@ -13,6 +13,7 @@ interface NavThemeSwitcherProps {
 export function NavThemeSwitcher({ isExpanded }: NavThemeSwitcherProps) {
   const [mounted, setMounted] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   const [menuPosition, setMenuPosition] = useState<"bottom" | "top">("bottom");
   const { theme, setTheme } = useTheme();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -89,6 +90,8 @@ export function NavThemeSwitcher({ isExpanded }: NavThemeSwitcherProps) {
       <button
         ref={buttonRef}
         onClick={() => setShowMenu(!showMenu)}
+        onMouseEnter={() => !isExpanded && setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
         className={cn(
           "w-full h-10 rounded-lg hover:bg-foreground/10 active:bg-foreground/15 transition-all duration-300 flex items-center overflow-hidden",
           isExpanded ? "gap-3 px-3 justify-start" : "justify-center"
@@ -109,6 +112,20 @@ export function NavThemeSwitcher({ isExpanded }: NavThemeSwitcherProps) {
           {getLabel()}
         </span>
       </button>
+
+      {!isExpanded && showTooltip && !showMenu && (
+        <div
+          className="absolute left-full ml-4 px-3 py-2 bg-background/75 backdrop-blur-xl text-foreground/80 text-sm rounded-xl shadow-lg whitespace-nowrap pointer-events-none"
+          style={{
+            zIndex: Z_INDEX.TOOLTIP,
+            top: "50%",
+            transform: "translateY(-50%)",
+          }}
+          role="tooltip"
+        >
+          Theme
+        </div>
+      )}
 
       {showMenu && (
         <div
